@@ -93,7 +93,23 @@ export function ChatWidget() {
     } catch {
       setError(true);
       // Degrade to static FAQ: try to find a matching answer
-      const lower = text.toLowerCase();
+      const lower = text.toLowerCase().trim();
+
+      // Greetings
+      const greetings = ["hi", "hello", "hey", "yo", "greetings", "sup"];
+      if (greetings.some((g) => lower === g || lower.startsWith(g + " "))) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "assistant",
+            content: `Hi — I'm the static fallback for ${facts.name}'s portfolio. Ask me about projects, experience, skills, or how to get in touch. (AI assistant is temporarily unavailable.)`,
+            sources: [],
+          },
+        ]);
+        setLoading(false);
+        return;
+      }
+
       const match = FAQ_ENTRIES.find((f) =>
         lower.includes(f.q.toLowerCase().split(" ")[0])
       );
@@ -193,10 +209,16 @@ export function ChatWidget() {
               </div>
             )}
             {error && (
-              <div className="p-3 rounded bg-accent/10 border border-solid border-accent/30">
+              <div className="p-3 rounded bg-accent/10 border border-solid border-accent/30 flex items-start gap-2">
                 <p className="text-xs font-mono text-accent">
                   AI assistant unavailable. Static answers may be limited.
                 </p>
+                <button
+                  onClick={() => setError(false)}
+                  className="ml-auto text-[10px] font-mono text-accent hover:underline"
+                >
+                  Dismiss
+                </button>
               </div>
             )}
           </div>
