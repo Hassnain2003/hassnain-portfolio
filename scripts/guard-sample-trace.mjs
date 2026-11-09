@@ -5,9 +5,9 @@ const ROOT = process.cwd();
 const SRC = path.join(ROOT, "src");
 
 // 1. Find all trace files that define source === "sample"
-const sampleTraceFiles: string[] = [];
+const sampleTraceFiles = [];
 
-function findSampleTraces(dir: string) {
+function findSampleTraces(dir) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
@@ -23,9 +23,9 @@ function findSampleTraces(dir: string) {
 findSampleTraces(SRC);
 
 // 2. Find all files that import from those sample trace files
-const importingFiles: string[] = [];
+const importingFiles = [];
 
-function scanImports(dir: string) {
+function scanImports(dir) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
@@ -53,7 +53,7 @@ scanImports(SRC);
 
 // 3. Check if any importing file is a client component (has "use client")
 // or is a page/route that gets bundled for production
-const productionBoundFiles: string[] = [];
+const productionBoundFiles = [];
 
 for (const file of importingFiles) {
   const content = fs.readFileSync(file, "utf8");

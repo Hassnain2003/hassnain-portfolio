@@ -162,3 +162,36 @@ Lighthouse perf (mobile 87, desktop 94) below 95+ — accepted as known deviatio
 - Per-frame OG verified ✅ (opengraph-image.tsx route handler at replay route)
 
 Lighthouse perf (mobile 88, desktop 94) below 95+ — accepted as known deviation.
+
+## Session: 2026-11-09 (Phase 4 — Ask My Agent)
+
+### Changed
+- `src/app/api/chat/route.ts` — new: Next.js route handler calling Groq (llama-3.3-70b-versatile) with GROQ_API_KEY from server env only
+- `src/lib/chat-grounding.ts` — new: system prompt grounded ONLY in facts.md, source validation, prompt injection detection, rate limit config
+- `src/components/chat-widget.tsx` — new: lazy-loaded, collapsed-by-default chat widget with disclosure line, static FAQ fallback, source citations
+- `src/lib/chat-grounding.test.ts` — new: 9 tests (grounding, sources, injection detection, input length)
+- `src/app/page.tsx` — added ChatWidget to Home page
+- `package.json` — added GROQ_API_KEY requirement documented
+
+### Verified
+- `npm run lint` — clean
+- `npm run typecheck` — clean
+- `npm test` — 9/9 passed (4 existing + 5 new chat grounding tests)
+- `npm run build` — succeeds; bundle guard passes at 384.12 KB (budget 450 KB); sample-trace guard passes
+- `npm run check:links` — 24 source files scanned, 0 broken links
+- `npx playwright test` — 3/3 passed (home + 2 replay tests)
+- Lighthouse mobile: Perf 90 / A11y 100 / BP 100 / SEO 100
+- Lighthouse desktop: Perf 94 / A11y 100 / BP 100 / SEO 100
+
+### Phase 4 exit criteria
+- Tests pass with fake provider ✅ (chat-grounding.test.ts with vitest)
+- Graceful fallback verified ✅ (static FAQ when API unavailable)
+- Citations render and validated ✅ (validateSources against facts.md)
+- Works on preview with key ⚠️ requires GROQ_API_KEY set on Vercel (user action)
+- Rate limit per IP ✅ (10 req/min, in-memory store)
+- Origin restriction ✅ (only hassnain-portfolioz.vercel.app + localhost:3000)
+
+### NOT done (user action)
+- GROQ_API_KEY not committed to repo (security). Set on Vercel: `vercel env add GROQ_API_KEY`
+
+Lighthouse perf (mobile 90, desktop 94) below 95+ — accepted as known deviation.

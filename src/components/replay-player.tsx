@@ -32,7 +32,6 @@ export function ReplayPlayer({ trace, initialStep }: { trace: Trace; initialStep
   const [copyFeedback, setCopyFeedback] = useState(false);
 
   const rafRef = useRef<number | null>(null);
-  const lastFrameRef = useRef<number>(0);
   const stepStartTimeRef = useRef<number>(0);
 
   const intervalMs = useCallback(() => {
@@ -81,7 +80,6 @@ export function ReplayPlayer({ trace, initialStep }: { trace: Trace; initialStep
 
   const stepTime = trace.clusterTimeline[step]?.timestamp ?? 0;
   const podStates = computePodStatesAt(trace.clusterTimeline, stepTime);
-  const currentStep = trace.agentSteps[step];
   const isLastStep = step >= trace.clusterTimeline.length - 1;
 
   const permalink = `${window.location.origin}/projects/kube-triage/replay/${trace.id}/${step}`;

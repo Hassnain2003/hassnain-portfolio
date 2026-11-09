@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import { facts } from "@/data/facts";
 import { CommandPalette } from "@/components/command-palette";
 import { ProjectCard } from "@/components/project-card";
+import { ChatWidget } from "@/components/chat-widget";
 
 const ClusterVisual = dynamic(
   () => import("@/components/cluster-visual").then((mod) => mod.ClusterVisual),
@@ -244,6 +245,7 @@ export default function Home() {
         </div>
       </footer>
       <CommandPalette />
+      <ChatWidget />
     </div>
   );
 }

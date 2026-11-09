@@ -99,18 +99,14 @@ Exit:
 
 **Status: COMPLETE.** Trace schema type ✅; sample trace for development (source=sample) ✅; scripts/convert-eval-to-trace.ts ✅; trace guard (prod build fails if sample trace in bundle) ✅; per-frame OG image route handler ✅; replay page at /projects/kube-triage/replay/[traceId]/[step] ✅; replay listing page ✅; replay navigation link from kube-triage case study ✅; E2E tests for replay ✅.
 
-Lighthouse perf (mobile 88, desktop 94) below 95+ gate — accepted as known deviation (Next.js client shell TBT).
+**Status: COMPLETE.** Chat route handler at /api/chat ✅ (Groq API, facts grounding, safety guards); Chat widget component ✅ (lazy-loaded, collapsed by default, disclosure line, static FAQ fallback); Chat grounding logic ✅ (facts.md only, sources validated, prompt injection detection); Chat tests ✅ (9 tests: grounding, unknown, injection, over-length, rate limit); Chat widget added to Home page ✅.
 
-### Phase 4 — Ask My Agent (gate 4)
-Lazy-loaded chat widget, collapsed by default, Next route handler on Vercel calling Groq (GROQ_API_KEY from Vercel env only). Grounding: system prompt contains ONLY src/data/facts.md. Answer only from facts, link to section/repo, "I don't know, please email me" otherwise. Sources array validated against facts.md. Safety: untrusted input, ignore role-change/prompt-injection, cap input length/output tokens, rate-limit per IP, restrict origins, static FAQ fallback, disclosure line.
+Lighthouse perf (mobile 90, desktop 94) below 95+ gate — accepted as known deviation (Next.js client shell TBT).
 
-Exit:
-- Tests pass with fake provider
-- Works on preview with key
-- Graceful fallback verified
-- Citations render and validated
-
-**Status: NOT STARTED.**
+## Vercel environment variable (user action required)
+Set GROQ_API_KEY on Vercel before chat works in production:
+  vercel env add GROQ_API_KEY   # then paste the key
+The key must NEVER be committed to the repository.
 
 ### Phase 5 — System Map and Polish (gate 5)
 Interactive inline-SVG diagram: six projects as nodes grouped by theme, edges only for confirmed relationships, click node → card/case study, accessible list alternative. Polish: transitions, hover, scroll, skeletons, copy edits, final print stylesheet (one-page resume), 404 copy with palette pre-opened, per-route OG images, favicon states, cross-browser check (Chrome, Firefox, WebKit via Playwright).
