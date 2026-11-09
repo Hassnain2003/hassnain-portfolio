@@ -3,11 +3,7 @@ import { facts } from "@/data/facts";
 import { CommandPalette } from "@/components/command-palette";
 import { ProjectCard } from "@/components/project-card";
 import { ChatWidget } from "@/components/chat-widget";
-
-const ClusterVisual = dynamic(
-  () => import("@/components/cluster-visual").then((mod) => mod.ClusterVisual),
-  { loading: () => null }
-);
+import { SystemMap } from "@/components/system-map";
 
 import telemetryData from "@/data/telemetry.json";
 
@@ -77,16 +73,7 @@ export default function Home() {
       </header>
 
       <main id="main" className="mx-auto max-w-6xl px-6 pb-24">
-        {/* Cluster section */}
-        <section id="cluster" className="grid gap-12 print-break">
-          <div className="border border-border rounded-lg p-6 text-sm">
-            <h2 className="font-mono font-semibold text-foreground mb-3">Cluster</h2>
-            <p className="text-muted">
-              System status — all services healthy. Break-It replay ships in Phase 3.
-            </p>
-          </div>
-          <ClusterVisual />
-        </section>
+        <SystemMap />
 
         {/* Projects section */}
         <section id="projects" className="grid gap-12 print-break">
@@ -120,7 +107,7 @@ export default function Home() {
                     </h3>
                     <p className="text-sm font-mono text-muted">
                       {exp.employer} · {exp.period}
-                      {exp.location && ` · {exp.location}`}
+                      {exp.location && ` · ${exp.location}`}
                     </p>
                   </div>
                 </div>

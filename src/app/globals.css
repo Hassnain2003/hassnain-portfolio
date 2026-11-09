@@ -198,6 +198,8 @@ a:hover {
     font-size: 9.5pt;
     line-height: 1.45;
     background-image: none;
+    margin: 0;
+    padding: 0;
   }
   a {
     text-decoration: none;
@@ -208,5 +210,96 @@ a:hover {
   }
   .print-break {
     break-inside: avoid;
+  }
+
+  /* One-page resume: hide interactive/nav elements */
+  nav, footer, button, .theme-toggle, [id="theme-toggle"],
+  .command-palette, [role="dialog"],
+  .border-t.border-solid {
+    display: none !important;
+  }
+
+  /* Resume layout: single column, no max-width constraint */
+  .mx-auto.max-w-6xl.px-6 {
+    max-width: none !important;
+    padding: 0 0.5in !important;
+    margin: 0 !important;
+  }
+
+  /* Hero: name + role + availability at top */
+  header {
+    display: block !important;
+    border: none !important;
+    padding: 0 !important;
+    margin-bottom: 0.5in !important;
+  }
+  header h1 {
+    font-size: 20pt !important;
+    margin-bottom: 4pt !important;
+  }
+  header p.text-xl {
+    font-size: 11pt !important;
+    margin-bottom: 2pt !important;
+  }
+
+  /* Contact buttons: show as text links only */
+  header .flex.flex-wrap.gap-3 {
+    display: none !important;
+  }
+
+  /* Sections: full width, no grid gaps for print */
+  main section {
+    break-inside: avoid;
+    margin-bottom: 0.3in;
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+  }
+  main section h2 {
+    font-size: 11pt !important;
+    border-bottom: 1pt solid #111827;
+    padding-bottom: 2pt;
+    margin-bottom: 8pt;
+  }
+  main section h3 {
+    font-size: 10pt !important;
+    margin-bottom: 2pt;
+  }
+
+  /* Project cards: inline for print */
+  article {
+    break-inside: avoid;
+    margin-bottom: 8pt;
+    padding: 4pt 0;
+  }
+  article h3 {
+    font-size: 10pt !important;
+  }
+  article p {
+    font-size: 8.5pt !important;
+    margin: 2pt 0;
+  }
+
+  /* System map: hidden in print (SVG doesn't print well) */
+  #system-map {
+    display: none !important;
+  }
+
+  /* Footer contact line: resume contact */
+  footer {
+    display: block !important;
+    border: none !important;
+    padding: 0 !important;
+    margin-top: 0.3in;
+    font-size: 8.5pt !important;
+    text-align: left !important;
+  }
+  footer .flex.flex-col.md\:flex-row {
+    flex-direction: column !important;
+    gap: 4pt;
+  }
+  footer a {
+    color: #111827 !important;
+    text-decoration: underline;
   }
 }
