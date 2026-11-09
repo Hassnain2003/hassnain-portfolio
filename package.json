@@ -13,6 +13,7 @@
     "test": "vitest run",
     "guard:todos": "node scripts/guard-todos.mjs",
     "guard:todos:strict": "node scripts/guard-todos.mjs --strict",
+    "check:links": "node scripts/check-links.mjs",
     "check:bundle-size": "node scripts/check-bundle-size.mjs",
     "gen:telemetry": "node scripts/gen-telemetry.mjs",
     "test:e2e": "playwright test"

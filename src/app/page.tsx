@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import { facts } from "@/data/facts";
 import { CommandPalette } from "@/components/command-palette";
+import { ProjectCard } from "@/components/project-card";
 
 const ClusterVisual = dynamic(
   () => import("@/components/cluster-visual").then((mod) => mod.ClusterVisual),
@@ -75,16 +76,140 @@ export default function Home() {
       </header>
 
       <main id="main" className="mx-auto max-w-6xl px-6 pb-24">
-        <section className="grid gap-12 print-break">
+        {/* Cluster section */}
+        <section id="cluster" className="grid gap-12 print-break">
           <div className="border border-border rounded-lg p-6 text-sm">
-            <h2 className="font-mono font-semibold text-foreground mb-3">Site status</h2>
+            <h2 className="font-mono font-semibold text-foreground mb-3">Cluster</h2>
             <p className="text-muted">
-              This portfolio is under construction. Case studies, the Break-It replay, and the
-              Ask-My-Agent chat ship in the coming phases. Everything here is static HTML and
-              works with JavaScript disabled.
+              System status — all services healthy. Break-It replay ships in Phase 3.
             </p>
           </div>
           <ClusterVisual />
+        </section>
+
+        {/* Projects section */}
+        <section id="projects" className="grid gap-12 print-break">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+            <div>
+              <h2 className="font-mono font-semibold text-foreground text-2xl">
+                Projects
+              </h2>
+              <p className="text-sm font-mono text-muted">
+                Built and shipped. Ordered as listed in facts.md.
+              </p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {facts.projects.map((project) => (
+              <ProjectCard key={project.name} {...project} />
+            ))}
+          </div>
+        </section>
+
+        {/* Experience section */}
+        <section id="experience" className="grid gap-12 print-break">
+          <h2 className="font-mono font-semibold text-foreground text-2xl">Experience</h2>
+          <div className="space-y-6">
+            {facts.experience.map((exp) => (
+              <article key={exp.employer} className="border-b border-solid border-border pb-6 last:border-0">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-2">
+                  <div>
+                    <h3 className="font-mono font-semibold text-foreground">
+                      {exp.role}
+                    </h3>
+                    <p className="text-sm font-mono text-muted">
+                      {exp.employer} · {exp.period}
+                      {exp.location && ` · {exp.location}`}
+                    </p>
+                  </div>
+                </div>
+                <ul className="list-disc list-inside space-y-1 text-sm font-mono text-muted">
+                  {exp.description.map((d) => (
+                    <li key={d}>{d}</li>
+                  ))}
+                </ul>
+                {(exp as { attribution?: string }).attribution && (
+                  <p className="mt-2 text-xs font-mono text-accent/70">
+                    {(exp as { attribution?: string }).attribution}
+                  </p>
+                )}
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* Skills section */}
+        <section id="skills" className="grid gap-12 print-break">
+          <h2 className="font-mono font-semibold text-foreground text-2xl">Skills</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {facts.skills.map((group) => (
+              <div key={group.area} className="border border-solid border-border rounded-lg p-4">
+                <h3 className="font-mono font-semibold text-foreground mb-2">
+                  {group.area}
+                </h3>
+                <p className="text-sm font-mono text-muted">
+                  {group.items.join(", ")}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* About section */}
+        <section id="about" className="grid gap-12 print-break">
+          <h2 className="font-mono font-semibold text-foreground text-2xl">About</h2>
+          <div className="border border-solid border-border rounded-lg p-6">
+            <p className="text-sm font-mono text-muted leading-relaxed">
+              {facts.name} is a final-year BS Information Technology student at
+              Bahria University Islamabad, graduating January 2027. Based in
+              {facts.location}, available full-time from
+              {facts.availability.split(" from ")[1]}. Builds AI agents and
+              backend infrastructure — LangGraph, MCP, LangChain, Groq, PostgreSQL,
+              Redis, Docker, Kubernetes, Terraform.
+            </p>
+            <p className="mt-4 text-sm font-mono text-muted leading-relaxed">
+              Leadership:{" "}
+              {facts.leadership
+                .map((l) => `${l.role} at ${l.organization} (${l.period})`)
+                .join("; ")}.
+            </p>
+          </div>
+        </section>
+
+        {/* Contact section */}
+        <section id="contact" className="grid gap-12 print-break">
+          <h2 className="font-mono font-semibold text-foreground text-2xl">Contact</h2>
+          <div className="border border-solid border-border rounded-lg p-6 text-center">
+            <p className="text-sm font-mono text-muted mb-4">
+              Resume · GitHub · LinkedIn · Email
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-3">
+              <a
+                href={resumeHref}
+                className="flex h-10 min-w-fit items-center justify-center gap-2 rounded-full border border-solid border-current px-4 text-xs font-mono text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              >
+                Resume
+              </a>
+              <a
+                href={facts.links.github}
+                className="flex h-10 min-w-fit items-center justify-center gap-2 rounded-full border border-solid border-current px-4 text-xs font-mono text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              >
+                GitHub
+              </a>
+              <a
+                href={facts.links.linkedin}
+                className="flex h-10 min-w-fit items-center justify-center gap-2 rounded-full border border-solid border-current px-4 text-xs font-mono text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              >
+                LinkedIn
+              </a>
+              <a
+                href={`mailto:${facts.links.email}`}
+                className="flex h-10 min-w-fit items-center justify-center gap-2 rounded-full border border-solid border-current px-4 text-xs font-mono text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              >
+                Email
+              </a>
+            </div>
+          </div>
         </section>
       </main>
 

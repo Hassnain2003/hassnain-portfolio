@@ -42,6 +42,9 @@ jobs:
       - name: Build (includes TODO guard and 150 KB bundle-size guard)
         run: npm run build
 
+      - name: Link checker
+        run: npm run check:links
+
       - name: Install Chrome for Lighthouse
         uses: browser-actions/setup-chrome@v2
 

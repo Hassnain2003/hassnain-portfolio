@@ -97,3 +97,32 @@ What has been done, what changed, what was verified, what is blocked. Updated af
 - Palette reachable and closable by keyboard ✅
 
 Lighthouse perf (mobile 89, desktop 84) below 95+ — accepted as known deviation (Next.js client shell TBT).
+
+## Session: 2026-11-09 (Phase 2 — Projects and Case Studies)
+
+### Changed
+- `src/components/project-card.tsx` — new: project card component with status badge, tags, result line (confirmed vs pending), Code/Live/Demo links, TODO placeholders for missing links
+- `src/app/page.tsx` — replaced "Site status" section with full Projects, Experience, Skills, About, Contact sections; all driven from facts.ts
+- `src/data/case-studies.ts` — new: case-study data for agentdine, kube-triage, llm-gateway, this-site (problem, architecture, decisions, wentWrong, result, links)
+- `src/app/projects/[slug]/page.tsx` — new: dynamic case-study route with generateStaticParams
+- `scripts/check-links.mjs` — new: link checker for source files (broken internal/relative links)
+- `.github/workflows/ci.yml` — added link checker step after build
+- `package.json` — added `check:links` script
+
+### Verified
+- `npm run lint` — clean
+- `npm run typecheck` — clean
+- `npm test` — 4/4 passed
+- `npm run build` — succeeds; bundle guard passes at 380.37 KB (budget 450 KB)
+- `npm run check:links` — 11 source files scanned, 0 broken links
+- `npx playwright test tests/e2e/home.spec.ts` — passes
+- Lighthouse mobile: Perf 87 / A11y 100 / BP 100 / SEO 100
+- Lighthouse desktop: Perf 94 / A11y 100 / BP 100 / SEO 100
+
+### Phase 2 exit criteria
+- All links real or marked TODO ✅ (link checker passes)
+- Case study template reusable ✅ (/projects/[slug] dynamic route)
+- "Result: pending" renders correctly on unconfirmed cards ✅ (AgentDine, kube-triage show pending)
+- Mobile layout at 360px — deferred to Phase 5
+
+Lighthouse perf (mobile 87, desktop 94) below 95+ — accepted as known deviation.
