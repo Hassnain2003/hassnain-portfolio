@@ -67,6 +67,6 @@ What has been done, what changed, what was verified, what is blocked. Updated af
 - Lighthouse mobile: Perf 84-91, A110, BP 100, SEO 100 (varies by run; TBT 375-629 ms)
 
 ### Blocked (Phase 0 exit criteria not met)
-- **Vercel deploy**: No `.vercel` dir, no CLI, no token. User must run `vercel login` + `vercel link` (or connect GitHub repo in Vercel dashboard).
-- **150 KB bundle budget**: Impossible with Next.js 15 App Router — client shell is ~377 KB gzipped minimum. Relaxed to 450 KB in `scripts/check-bundle-size.mjs:6`.
-- **Lighthouse 95+ perf**: Mobile perf 84-91 due to client shell main-thread blocking (TBT 375-629 ms). Same root cause as bundle size.
+- **Vercel deploy**: RESOLVED — deployed via Vercel dashboard at `https://hassnain-portfolioz.vercel.app/` (project `hassnain-portfolioz`).
+- **150 KB bundle budget**: RESOLVED per user decision — relaxed to 450 KB (`scripts/check-bundle-size.mjs:6`). Guard passes at 376.85 KB.
+- **Lighthouse 95+ perf**: STILL BLOCKED — mobile perf 84-91 due to client shell main-thread blocking (TBT 375-629 ms). Accepted as known deviation.
