@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 
 import { SYSTEM_PROMPT, validateSources, isPromptInjection, MAX_INPUT_LENGTH } from "@/lib/chat-grounding";
 
-const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
-const GROQ_MODEL = "llama-3.3-70b-versatile";
+const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
 
 // In-memory rate limiter: IP -> { count, resetTime }
 // Documented: 10 requests per minute per IP. Resets every 60 seconds.
@@ -38,7 +37,7 @@ export const runtime = "edge";
 
 export async function POST(request: Request) {
   // 1. Check API key is configured (server-side only, never in client bundle)
-  const apiKey = process.env.GROQ_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     return NextResponse.json(
       { error: "Chat service not configured" },
@@ -94,23 +93,27 @@ export async function POST(request: Request) {
     );
   }
 
-  // 6. Call Groq API
-  let groqResponse: Response;
+  // 6. Call Gemini API
+  let geminiResponse: Response;
   try {
-    groqResponse = await fetch(GROQ_API_URL, {
+    geminiResponse = await fetch(`${GEMINI_API_URL}?key=${apiKey}`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: GROQ_MODEL,
-        messages: [
-          { role: "system", content: SYSTEM_PROMPT },
-          { role: "user", content: message },
+        systemInstruction: {
+          parts: [{ text: SYSTEM_PROMPT }],
+        },
+        contents: [
+          {
+            parts: [{ text: message }],
+          },
         ],
-        max_tokens: 250,
-        temperature: 0.3,
+        generationConfig: {
+          temperature: 0.3,
+          maxOutputTokens: 250,
+        },
       }),
     });
   } catch {
@@ -120,15 +123,15 @@ export async function POST(request: Request) {
     );
   }
 
-  if (!groqResponse.ok) {
+  if (!geminiResponse.ok) {
     return NextResponse.json(
       { error: "Chat service error" },
       { status: 502 }
     );
   }
 
-  const groqData = await groqResponse.json();
-  const content = groqData.choices?.[0]?.message?.content;
+  const geminiData = await geminiResponse.json();
+  const content = geminiData.candidates?.[0]?.content?.parts?.[0]?.text;
 
   if (!content) {
     return NextResponse.json(
@@ -137,12 +140,14 @@ export async function POST(request: Request) {
     );
   }
 
-  // 7. Parse the JSON response from Groq
+  // 7. Parse the JSON response from Gemini
   let parsed: { answer: string; sources: string[]; confidence: "high" | "medium" | "low" };
   try {
-    parsed = JSON.parse(content);
+    // Gemini may wrap JSON in markdown code fences — strip them
+    const cleaned = content.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+    parsed = JSON.parse(cleaned);
   } catch {
-    // Groq didn't return valid JSON — treat as unknown
+    // Gemini didn't return valid JSON — treat as unknown
     parsed = {
       answer: "I don't know, please email me at abbashussnain818@gmail.com",
       sources: [],
