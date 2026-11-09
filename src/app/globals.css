@@ -1,0 +1,212 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/inter-400.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/inter-600.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/fonts/inter-800.ttf") format("truetype");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/jetbrains-400.ttf") format("truetype");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/jetbrains-700.ttf") format("truetype");
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-panel: var(--panel);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
+}
+
+:root {
+  --bg: #0b0c0d;
+  --fg: #eef0f1;
+  --muted: #93979d;
+  --border: #1f2224;
+  --panel: #121416;
+  --accent: #f59e0b;
+  --accent-foreground: #0b0c0d;
+  --font-inter: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-jetbrains-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", monospace;
+  --grid-color: #141719;
+}
+
+[data-theme="light"] {
+  --bg: #ffffff;
+  --fg: #111827;
+  --muted: #4b5563;
+  --border: #e5e7eb;
+  --panel: #f3f4f6;
+  --accent: #ca8a04;
+  --accent-foreground: #ffffff;
+  --grid-color: #eef0f2;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  line-height: 1.5;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  background-image: linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-repeat: repeat;
+  color: var(--fg);
+  font-family: var(--font-inter);
+  font-size: 1rem;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  text-underline-position: under;
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 1rem;
+  margin: 1rem;
+  background: var(--accent);
+  color: var(--accent-foreground);
+  font-weight: 600;
+  border-radius: 4px;
+  text-decoration: none;
+  z-index: 100;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.led {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.led-ok {
+  background-color: #10b981;
+  box-shadow: 0 0 0 1px #10b981, 0 0 8px #10b981;
+}
+
+.led-warn {
+  background-color: #f59e0b;
+  box-shadow: 0 0 0 1px #f59e0b, 0 0 8px #f59e0b;
+}
+
+.led-bad {
+  background-color: #ef4444;
+  box-shadow: 0 0 0 1px #ef4444, 0 0 8px #ef4444;
+}
+
+.pulse {
+  animation: pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.theme-toggle svg {
+  transition: transform 0.2s ease;
+}
+
+.theme-toggle[data-theme="light"] svg {
+  transform: rotate(180deg);
+}
+
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #111827 !important;
+    font-size: 9.5pt;
+    line-height: 1.45;
+    background-image: none;
+  }
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  .print-hidden {
+    display: none !important;
+  }
+  .print-break {
+    break-inside: avoid;
+  }
+}

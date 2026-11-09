@@ -1,0 +1,81 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "phase/*"]
+  pull_request:
+    branches: ["main", "phase/*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build (includes TODO guard and 150 KB bundle-size guard)
+        run: npm run build
+
+      - name: Install Chrome for Lighthouse
+        uses: browser-actions/setup-chrome@v2
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Start preview server
+        run: npm run start > /tmp/next.log 2>&1 &
+        shell: bash
+
+      - name: Wait for server
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:3000 >/dev/null && exit 0
+            sleep 1
+          done
+          echo "Server did not become ready" >&2
+          cat /tmp/next.log >&2 || true
+          exit 1
+        shell: bash
+
+      - name: E2E smoke tests
+        run: npx playwright test
+
+      - name: Lighthouse desktop
+        run: npx lighthouse http://localhost:3000 --preset=desktop --output=json --output-path=lighthouse.desktop.json --quiet --chrome-flags="--headless --no-sandbox --disable-gpu"
+
+      - name: Lighthouse mobile
+        run: npx lighthouse http://localhost:3000 --preset=mobile --output=json --output-path=lighthouse.mobile.json --quiet --chrome-flags="--headless --no-sandbox --disable-gpu"
+
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: lighthouse.*.json
+          retention-days: 7
