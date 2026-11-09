@@ -67,8 +67,8 @@ What has been done, what changed, what was verified, what is blocked. Updated af
 - Lighthouse mobile: Perf 84-91, A110, BP 100, SEO 100 (varies by run; TBT 375-629 ms)
 
 ### Blocked (Phase 0 exit criteria not met)
-- **Vercel deploy**: RESOLVED — deployed via Vercel dashboard at `https://hassnain-portfolioz.vercel.app/` (project `hassnain-portfolioz`).
-- **150 KB bundle budget**: RESOLVED per user decision — relaxed to 450 KB (`scripts/check-bundle-size.mjs:6`). Guard passes at 376.85 KB.
+- **Vercel deploy**: RESOLVED — deployed via Vercel dashboard at `https://hassnain-portfolioz.vercel.app/` (project `hassnain-portfolioz`, GitHub repo `Hassnain2003/hassnain-portfolioz`). Code pushed to both remotes; Vercel auto-deploys from `hassnain-portfolioz/main`. Verified live site serves Phase 1+2 content (AgentDine, kube-triage, llm-gateway, Projects, Experience, Skills, About, Contact).
+- **150 KB bundle budget**: RESOLVED per user decision — relaxed to 450 KB (`scripts/check-bundle-size.mjs:6`). Guard passes at 380.37 KB.
 - **Lighthouse 95+ perf**: STILL BLOCKED — mobile perf 84-91 due to client shell main-thread blocking (TBT 375-629 ms). Accepted as known deviation.
 
 ## Session: 2026-11-09 (Phase 1 — The First 5 Seconds)

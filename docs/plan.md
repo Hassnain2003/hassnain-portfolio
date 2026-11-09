@@ -48,8 +48,10 @@ Exit:
 
 ## Decisions made (user)
 
+## Decisions made (user)
+
 ### 1. Vercel project
-Linked directly via Vercel dashboard: `https://hassnain-portfolioz.vercel.app/` (project `hassnain-portfolioz`). CI will run lint/typecheck/unit/build/e2e/Lighthouse on pushes to `main` and `phase/*` branches.
+Linked directly via Vercel dashboard at `https://hassnain-portfolioz.vercel.app/` (project `hassnain-portfolioz`, GitHub repo `Hassnain2003/hassnain-portfolioz`). Code pushed to both `hassnain-portfolio` and `hassnain-portfolioz` remotes; Vercel auto-deploys from `hassnain-portfolioz`.
 
 ### 2. Bundle budget (150 KB vs ~377 KB)
 Relaxed to 450 KB (option C — "do what you like"). Next.js 15 App Router client shell (~212 KB `ed9f` chunk + ~165 KB other chunks = ~377 KB gzipped) is inherent and cannot be tree-shaken. Static export was tested but made it WORSE (461 KB). 150 KB is technically impossible with Next.js 15 App Router.
