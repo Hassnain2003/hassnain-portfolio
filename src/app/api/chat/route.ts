@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { SYSTEM_PROMPT, validateSources, isPromptInjection, MAX_INPUT_LENGTH } from "@/lib/chat-grounding";
 
-const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent";
 
 // In-memory rate limiter: IP -> { count, resetTime }
 // Documented: 10 requests per minute per IP. Resets every 60 seconds.
