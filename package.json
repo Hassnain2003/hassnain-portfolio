@@ -1,0 +1,48 @@
+{
+  "name": "hassnain-portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Auditable portfolio of Hassnain Abbas — AI & Backend Engineer building LLM agents and the infrastructure they run on.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "postbuild": "npm run guard:todos && npm run check:bundle-size",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "guard:todos": "node scripts/guard-todos.mjs",
+    "guard:todos:strict": "node scripts/guard-todos.mjs --strict",
+    "check:bundle-size": "node scripts/check-bundle-size.mjs",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "next": "15.5.29",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.0",
+    "@tailwindcss/postcss": "^4.3.5",
+    "@types/node": "^22.20.5",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "15.5.29",
+    "jsdom": "^31.0.0",
+    "playwright": "^1.65.0",
+    "postcss": "^8.5.32",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vite": "^8.3.7",
+    "vitest": "^5.1.0"
+  },
+  "license": "MIT",
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Safari versions",
+    "last 2 iOS versions",
+    "last 2 Android versions"
+  ]
+}
