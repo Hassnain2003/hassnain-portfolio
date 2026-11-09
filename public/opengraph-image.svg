@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0b0c0d" />
+  <g text-anchor="middle" font-family="'JetBrains Mono','Inter',sans-serif">
+    <circle cx="600" cy="220" r="42" fill="#f59e0b" />
+    <text x="600" y="232" font-size="22" font-weight="800" fill="#0b0c0d" text-anchor="middle">HR</text>
+    <text x="600" y="340" font-size="48" font-weight="800" letter-spacing="-0.02em" fill="#eef0f1">Hassnain Abbas</text>
+    <text x="600" y="400" font-size="24" font-weight="600" fill="#eef0f1">AI &amp; Backend Engineer</text>
+    <text x="600" y="445" font-size="18" font-weight="500" fill="#93979d" text-anchor="middle" max-width="900">LLM agents and the infrastructure they run on &#183; available full-time from 4 January 2027</text>
+  </g>
+</svg>

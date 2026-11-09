@@ -1,4 +1,16 @@
+import dynamic from "next/dynamic";
 import { facts } from "@/data/facts";
+import { CommandPalette } from "@/components/command-palette";
+
+const ClusterVisual = dynamic(
+  () => import("@/components/cluster-visual").then((mod) => mod.ClusterVisual),
+  { loading: () => null }
+);
+
+import telemetryData from "@/data/telemetry.json";
+
+const telemetry: { lighthouse?: string | null; bundleSize?: string | null; source?: string | null } | null =
+  telemetryData;
 
 const resumeHref = facts.links.resume || "#resume";
 
@@ -15,6 +27,24 @@ export default function Home() {
             <span className="led led-ok" aria-hidden="true" />
             Available full-time from {facts.availability.split(" from ")[1]}
           </div>
+          {telemetry && telemetry.lighthouse && (
+            <p className="mt-2 text-xs font-mono text-muted">
+              This site: {telemetry.lighthouse} ·{" "}
+              {telemetry.bundleSize ? (
+                <>
+                  {telemetry.bundleSize} ·{" "}
+                </>
+              ) : null}
+              <a
+                href={telemetry.source || "#"}
+                className="underline underline-offset-3 hover:text-accent transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                source
+              </a>
+            </p>
+          )}
         </div>
         <div className="mt-10 flex flex-wrap gap-3 print-hidden">
           <a
@@ -54,6 +84,7 @@ export default function Home() {
               works with JavaScript disabled.
             </p>
           </div>
+          <ClusterVisual />
         </section>
       </main>
 
@@ -70,6 +101,7 @@ export default function Home() {
             </a>
           </div>
           <button
+            id="theme-toggle"
             className="theme-toggle inline-flex h-8 w-8 items-center justify-center rounded-full border border-solid border-current/30 bg-transparent p-0 text-foreground transition-colors hover:bg-accent/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             aria-label="Toggle theme"
             title="Toggle theme"
@@ -86,6 +118,7 @@ export default function Home() {
           </button>
         </div>
       </footer>
+      <CommandPalette />
     </div>
   );
 }

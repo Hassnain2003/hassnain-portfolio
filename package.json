@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postbuild": "npm run guard:todos && npm run check:bundle-size",
+    "postbuild": "npm run guard:todos && npm run check:bundle-size && npm run gen:telemetry",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
@@ -14,6 +14,7 @@
     "guard:todos": "node scripts/guard-todos.mjs",
     "guard:todos:strict": "node scripts/guard-todos.mjs --strict",
     "check:bundle-size": "node scripts/check-bundle-size.mjs",
+    "gen:telemetry": "node scripts/gen-telemetry.mjs",
     "test:e2e": "playwright test"
   },
   "dependencies": {
