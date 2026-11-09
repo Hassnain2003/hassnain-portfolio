@@ -15,9 +15,6 @@ test.describe("Home page smoke", () => {
       await expect(
         page.getByText("AI & Backend Engineer building LLM agents")
       ).toBeVisible();
-      await expect(
-        page.getByText("Available full-time from 4 January 2027")
-      ).toBeVisible();
 
       // Contact buttons in header
       await expect(

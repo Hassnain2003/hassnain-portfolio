@@ -15,10 +15,6 @@ const FAQ_ENTRIES = [
     a: `${facts.name} — ${facts.role}`,
   },
   {
-    q: "When are you available?",
-    a: `Available full-time from ${facts.availability}.`,
-  },
-  {
     q: "Where are you based?",
     a: `${facts.location}.`,
   },

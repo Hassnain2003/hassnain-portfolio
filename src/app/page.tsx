@@ -34,10 +34,6 @@ export default function Home() {
           <p className="font-mono text-lg text-muted">
             {facts.role}
           </p>
-          <div className="flex items-center gap-2 text-sm font-mono text-muted">
-            <span className="led led-ok" aria-hidden="true" />
-            Available full-time from {facts.availability.split(" from ")[1]}
-          </div>
           {telemetry && telemetry.lighthouse && (
             <p className="mt-3 text-xs font-mono text-muted">
               This site: {telemetry.lighthouse} ·{" "}
@@ -142,8 +138,7 @@ export default function Home() {
             <p className="text-sm font-mono text-muted leading-relaxed">
               {facts.name} is a final-year BS Information Technology student at
               Bahria University Islamabad, graduating January 2027. Based in
-              {facts.location}, available full-time from
-              {facts.availability.split(" from ")[1]}. Builds AI agents and
+              {facts.location}. Builds AI agents and
               backend infrastructure — LangGraph, MCP, LangChain, Groq, PostgreSQL,
               Redis, Docker, Kubernetes, Terraform.
             </p>
