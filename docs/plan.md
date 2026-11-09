@@ -107,6 +107,7 @@ Lighthouse perf (mobile 90, desktop 94) below 95+ gate — accepted as known dev
 Set GROQ_API_KEY on Vercel before chat works in production:
   vercel env add GROQ_API_KEY   # then paste the key
 The key must NEVER be committed to the repository.
+✅ COMPLETED — GROQ_API_KEY set on Vercel production (hassnain-portfolioz).
 
 ### Phase 5 — System Map and Polish (gate 5)
 Interactive inline-SVG diagram: six projects as nodes grouped by theme, edges only for confirmed relationships, click node → card/case study, accessible list alternative. Polish: transitions, hover, scroll, skeletons, copy edits, final print stylesheet (one-page resume), 404 copy with palette pre-opened, per-route OG images, favicon states, cross-browser check (Chrome, Firefox, WebKit via Playwright).
