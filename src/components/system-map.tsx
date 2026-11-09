@@ -24,7 +24,6 @@ const THEMES: Record<string, { label: string; color: string; projects: string[] 
   },
 };
 
-// Node positions for a clean layout
 const NODE_POSITIONS: Record<string, { x: number; y: number }> = {
   AgentDine: { x: 160, y: 100 },
   "kube-triage": { x: 340, y: 60 },
@@ -48,19 +47,14 @@ export function SystemMap() {
   return (
     <section
       id="system-map"
-      className="grid gap-12 print-break"
+      className="section print-break"
       aria-label="System map of projects"
     >
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-        <div>
-          <h2 className="font-mono font-semibold text-foreground text-2xl">System map</h2>
-          <p className="text-sm font-mono text-muted">
-            Six projects grouped by theme. Click a node to open its card or case study.
-          </p>
-        </div>
+      <div className="section-header">
+        <h2>System map</h2>
+        <p>Six projects grouped by theme. Click a node to open its card or case study.</p>
       </div>
 
-      {/* SVG diagram */}
       <div className="relative w-full h-[560px] bg-panel border border-solid border-border rounded-lg overflow-hidden">
         <svg
           className="absolute inset-0 w-full h-full"
@@ -78,7 +72,7 @@ export function SystemMap() {
               refY={3}
               orient="auto"
             >
-              <path d="M0,0 L0,6 L6,3 z" fill="#93979d" />
+              <path d="M0,0 L0,6 L6,3 z" fill="#737373" />
             </marker>
             <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.35" />
@@ -86,24 +80,20 @@ export function SystemMap() {
             </radialGradient>
           </defs>
 
-          {/* Theme background bands */}
           <rect x="40" y="20" width="260" height="340" fill="#f59e0b" opacity={0.06} rx="12" />
           <rect x="300" y="20" width="360" height="340" fill="#3b82f6" opacity={0.06} rx="12" />
 
-          {/* Theme labels */}
-          <text x="170" y="40" fontSize="10" fontFamily="'JetBrains Mono', monospace" fill="#f59e0b" fontWeight="600" textAnchor="middle" letter-spacing="0.05em">
+          <text x="170" y="40" fontSize="10" fontFamily="'JetBrains Mono', monospace" fill="#f59e0b" fontWeight="600" textAnchor="middle" letterSpacing="0.05em">
             Agents & LLM systems
           </text>
-          <text x="480" y="40" fontSize="10" fontFamily="'JetBrains Mono', monospace" fill="#3b82f6" fontWeight="600" textAnchor="middle" letter-spacing="0.05em">
+          <text x="480" y="40" fontSize="10" fontFamily="'JetBrains Mono', monospace" fill="#3b82f6" fontWeight="600" textAnchor="middle" letterSpacing="0.05em">
             Infrastructure & full-stack
           </text>
 
-          {/* Nodes */}
           {facts.projects.map((p) => {
             const pos = NODE_POSITIONS[p.name];
             const theme = projectTheme(p.name);
             const isSelected = selected === p.name;
-            const glow = isSelected ? " filter=\"url(#nodeGlow)\"" : "";
             return (
               <g
                 key={p.name}
@@ -117,10 +107,10 @@ export function SystemMap() {
                 role="button"
                 tabIndex={0}
                 aria-label={`Open ${p.name} case study`}
-                className="cursor-pointer"
                 style={{
                   outline: isSelected ? "2px solid #f59e0b" : "2px solid transparent",
                   outlineOffset: "2px",
+                  cursor: "pointer",
                 }}
               >
                 <circle
@@ -128,9 +118,8 @@ export function SystemMap() {
                   cy={pos.y}
                   r={20}
                   fill={THEMES[theme].color}
-                  className="transition-all duration-200 hover:r-24 hover:opacity-90"
                   style={{
-                    transition: "r 0.2s ease, opacity 0.2s ease",
+                    transition: "r 0.2s ease, opacity 0.2s ease, filter 0.2s ease",
                     filter: isSelected ? "url(#nodeGlow)" : "none",
                   }}
                 />
@@ -139,11 +128,10 @@ export function SystemMap() {
                   y={pos.y + 4}
                   fontSize="9"
                   fontFamily="'JetBrains Mono', monospace"
-                  fill="#0b0c0d"
+                  fill="#030303"
                   textAnchor="middle"
                   fontWeight="600"
                   pointerEvents="none"
-                  className="leading-tight"
                 >
                   {p.name.split(" ").map((w) => w[0]).join("")}
                 </text>
@@ -153,12 +141,11 @@ export function SystemMap() {
         </svg>
       </div>
 
-      {/* Selected project detail */}
       {selected && (
-        <div className="border border-solid border-border rounded-lg p-6 bg-panel">
+        <div className="card">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
             <div>
-              <h3 className="font-mono font-semibold text-foreground text-xl">
+              <h3 className="font-inter font-semibold text-foreground text-xl">
                 {selected}
               </h3>
               <span
@@ -200,7 +187,7 @@ export function SystemMap() {
           <div className="mt-4 flex items-center gap-3">
             <Link
               href={`/projects/${selected.toLowerCase().replace(/ /g, "-")}`}
-              className="flex items-center gap-2 rounded-full border border-solid border-current px-3 py-1 text-xs font-mono text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="btn btn-outline btn-sm"
             >
               Case study
             </Link>

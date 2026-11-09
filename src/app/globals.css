@@ -49,29 +49,25 @@
 }
 
 :root {
-  --bg: #0b0c0d;
-  --fg: #eef0f1;
-  --muted: #93979d;
-  --border: #1f2224;
-  --panel: #121416;
+  --bg: #030303;
+  --fg: #e5e5e5;
+  --muted: #737373;
+  --border: #141414;
+  --panel: #090909;
   --accent: #f59e0b;
-  --accent-foreground: #0b0c0d;
-  --font-inter: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-jetbrains-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
-    Consolas, "Liberation Mono", monospace;
-  --grid-color: #141719;
+  --accent-foreground: #030303;
+  --font-inter: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-jetbrains-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
 }
 
 [data-theme="light"] {
   --bg: #ffffff;
-  --fg: #111827;
-  --muted: #4b5563;
-  --border: #e5e7eb;
-  --panel: #f3f4f6;
-  --accent: #ca8a04;
+  --fg: #0a0a0a;
+  --muted: #525252;
+  --border: #e5e5e5;
+  --panel: #fafafa;
+  --accent: #d97706;
   --accent-foreground: #ffffff;
-  --grid-color: #eef0f2;
 }
 
 *,
@@ -81,20 +77,21 @@
 }
 
 html {
-  line-height: 1.5;
+  line-height: 1.6;
   -webkit-tap-highlight-color: transparent;
 }
 
 body {
   margin: 0;
   background-color: var(--bg);
-  background-image: linear-gradient(var(--grid-color) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-  background-size: 24px 24px;
-  background-repeat: repeat;
   color: var(--fg);
   font-family: var(--font-inter);
   font-size: 1rem;
+}
+
+::selection {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
 }
 
 a {
@@ -103,6 +100,7 @@ a {
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
   text-underline-position: under;
+  transition: color 0.2s ease;
 }
 
 a:hover {
@@ -143,6 +141,138 @@ a:hover {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+.section {
+  border-bottom: 1px solid var(--border);
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.section:last-of-type {
+  border-bottom: none;
+}
+
+.section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.section-header h2 {
+  font-family: var(--font-inter);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.section-header p {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+.section-header::after {
+  content: "";
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--accent);
+  margin-top: 0.5rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.btn-primary {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+  padding: 0.5rem 1.25rem;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.1);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--fg);
+  padding: 0.5rem 1.25rem;
+}
+
+.btn-outline:hover {
+  border-color: var(--accent);
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--fg);
+  padding: 0.25rem 0.75rem;
+}
+
+.btn-ghost:hover {
+  color: var(--accent);
+  background-color: rgba(245, 158, 11, 0.05);
+}
+
+.btn-sm {
+  font-size: 0.75rem;
+  padding: 0.375rem 1rem;
+}
+
+.btn-lg {
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: var(--panel);
+  padding: 1.25rem;
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  border-color: var(--accent);
+}
+
+.card h3 {
+  font-family: var(--font-inter);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin: 0 0 0.25rem 0;
+}
+
+.card p {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.5;
 }
 
 .led {
@@ -191,10 +321,21 @@ a:hover {
   transform: rotate(180deg);
 }
 
+.nav-glass {
+  background: rgba(3, 3, 3, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+[data-theme="light"] .nav-glass {
+  background: rgba(255, 255, 255, 0.7);
+}
+
 @media print {
   body {
     background: #ffffff !important;
-    color: #111827 !important;
+    color: #0a0a0a !important;
     font-size: 9.5pt;
     line-height: 1.45;
     background-image: none;
@@ -211,22 +352,16 @@ a:hover {
   .print-break {
     break-inside: avoid;
   }
-
-  /* One-page resume: hide interactive/nav elements */
   nav, footer, button, .theme-toggle, [id="theme-toggle"],
   .command-palette, [role="dialog"],
   .border-t.border-solid {
     display: none !important;
   }
-
-  /* Resume layout: single column, no max-width constraint */
   .mx-auto.max-w-6xl.px-6 {
     max-width: none !important;
     padding: 0 0.5in !important;
     margin: 0 !important;
   }
-
-  /* Hero: name + role + availability at top */
   header {
     display: block !important;
     border: none !important;
@@ -241,13 +376,9 @@ a:hover {
     font-size: 11pt !important;
     margin-bottom: 2pt !important;
   }
-
-  /* Contact buttons: show as text links only */
   header .flex.flex-wrap.gap-3 {
     display: none !important;
   }
-
-  /* Sections: full width, no grid gaps for print */
   main section {
     break-inside: avoid;
     margin-bottom: 0.3in;
@@ -257,7 +388,7 @@ a:hover {
   }
   main section h2 {
     font-size: 11pt !important;
-    border-bottom: 1pt solid #111827;
+    border-bottom: 1pt solid #0a0a0a;
     padding-bottom: 2pt;
     margin-bottom: 8pt;
   }
@@ -265,8 +396,6 @@ a:hover {
     font-size: 10pt !important;
     margin-bottom: 2pt;
   }
-
-  /* Project cards: inline for print */
   article {
     break-inside: avoid;
     margin-bottom: 8pt;
@@ -279,13 +408,9 @@ a:hover {
     font-size: 8.5pt !important;
     margin: 2pt 0;
   }
-
-  /* System map: hidden in print (SVG doesn't print well) */
   #system-map {
     display: none !important;
   }
-
-  /* Footer contact line: resume contact */
   footer {
     display: block !important;
     border: none !important;
@@ -299,7 +424,7 @@ a:hover {
     gap: 4pt;
   }
   footer a {
-    color: #111827 !important;
+    color: #0a0a0a !important;
     text-decoration: underline;
   }
 }

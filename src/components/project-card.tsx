@@ -28,10 +28,10 @@ export function ProjectCard({
   context,
 }: ProjectCardProps) {
   return (
-    <article className="border border-solid border-border rounded-lg p-6 print-break">
+    <article className="card print-break">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
         <div>
-          <h3 className="font-mono font-semibold text-foreground">
+          <h3 className="font-inter font-semibold text-foreground">
             {name}
           </h3>
           <span
@@ -79,7 +79,7 @@ export function ProjectCard({
         {repo ? (
           <Link
             href={repo}
-            className="flex items-center gap-2 rounded-full border border-solid border-current px-3 py-1 text-xs font-mono text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="btn btn-outline btn-sm"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -93,7 +93,7 @@ export function ProjectCard({
         {live ? (
           <Link
             href={live}
-            className="flex items-center gap-2 rounded-full border border-solid border-current px-3 py-1 text-xs font-mono text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="btn btn-outline btn-sm"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -103,7 +103,7 @@ export function ProjectCard({
         {demo ? (
           <Link
             href={demo}
-            className="flex items-center gap-2 rounded-full border border-solid border-current px-3 py-1 text-xs font-mono text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="btn btn-outline btn-sm"
             target="_blank"
             rel="noopener noreferrer"
           >

@@ -2,11 +2,11 @@ import Link from "next/link";
 
 export function Nav() {
   return (
-    <nav className="sticky top-0 z-40 border-b border-solid border-border/60 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/[.75]" aria-label="Main navigation">
+    <nav className="sticky top-0 z-40 nav-glass" aria-label="Main navigation">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
         <Link
           href="/"
-          className="flex items-center gap-2 font-mono text-sm font-medium text-foreground"
+          className="flex items-center gap-2 font-inter font-medium text-sm text-foreground"
         >
           <span className="flex h-5 w-5 items-center justify-center rounded border border-solid border-accent bg-accent px-0.5 text-accent-foreground text-xs font-bold">
             HR

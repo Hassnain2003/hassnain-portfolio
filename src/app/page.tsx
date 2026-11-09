@@ -12,21 +12,34 @@ const telemetry: { lighthouse?: string | null; bundleSize?: string | null; sourc
 
 const resumeHref = facts.links.resume || "#resume";
 
+const contactBtn = (href: string, label: string) => (
+  <a
+    href={href}
+    className="btn btn-primary"
+    target={href.startsWith("mailto") ? undefined : "_blank"}
+    rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
+  >
+    {label}
+  </a>
+);
+
 export default function Home() {
   return (
     <div className="flex flex-col flex-1">
-      <header className="mx-auto max-w-6xl px-6 py-12 print-hidden">
-        <div className="flex flex-col gap-2 print-break">
-          <h1 className="text-4xl font-mono font-bold tracking-tight text-foreground sm:text-6xl">
+      <header className="mx-auto max-w-6xl px-6 py-16 print-hidden">
+        <div className="flex flex-col gap-3 print-break">
+          <h1 className="font-inter font-bold text-5xl tracking-tight text-foreground sm:text-7xl md:text-8xl">
             {facts.name}
           </h1>
-          <p className="text-xl font-mono text-muted">{facts.role}</p>
+          <p className="font-mono text-lg text-muted">
+            {facts.role}
+          </p>
           <div className="flex items-center gap-2 text-sm font-mono text-muted">
             <span className="led led-ok" aria-hidden="true" />
             Available full-time from {facts.availability.split(" from ")[1]}
           </div>
           {telemetry && telemetry.lighthouse && (
-            <p className="mt-2 text-xs font-mono text-muted">
+            <p className="mt-3 text-xs font-mono text-muted">
               This site: {telemetry.lighthouse} ·{" "}
               {telemetry.bundleSize ? (
                 <>
@@ -44,48 +57,21 @@ export default function Home() {
             </p>
           )}
         </div>
-        <div className="mt-10 flex flex-wrap gap-3 print-hidden">
-          <a
-            href={resumeHref}
-            className="flex h-10 min-w-fit items-center justify-center gap-2 rounded-full border border-solid border-current px-4 text-xs font-mono text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-          >
-            Resume
-          </a>
-          <a
-            href={facts.links.github}
-            className="flex h-10 min-w-fit items-center justify-center gap-2 rounded-full border border-solid border-current px-4 text-xs font-mono text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-          >
-            GitHub
-          </a>
-          <a
-            href={facts.links.linkedin}
-            className="flex h-10 min-w-fit items-center justify-center gap-2 rounded-full border border-solid border-current px-4 text-xs font-mono text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-          >
-            LinkedIn
-          </a>
-          <a
-            href={`mailto:${facts.links.email}`}
-            className="flex h-10 min-w-fit items-center justify-center gap-2 rounded-full border border-solid border-current px-4 text-xs font-mono text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-          >
-            Email
-          </a>
+        <div className="mt-8 flex flex-wrap gap-3 print-hidden">
+          {contactBtn(resumeHref, "Resume")}
+          {contactBtn(facts.links.github, "GitHub")}
+          {contactBtn(facts.links.linkedin, "LinkedIn")}
+          {contactBtn(`mailto:${facts.links.email}`, "Email")}
         </div>
       </header>
 
       <main id="main" className="mx-auto max-w-6xl px-6 pb-24">
         <SystemMap />
 
-        {/* Projects section */}
-        <section id="projects" className="grid gap-12 print-break">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-            <div>
-              <h2 className="font-mono font-semibold text-foreground text-2xl">
-                Projects
-              </h2>
-              <p className="text-sm font-mono text-muted">
-                Built and shipped. Ordered as listed in facts.md.
-              </p>
-            </div>
+        <section id="projects" className="section print-break">
+          <div className="section-header">
+            <h2>Projects</h2>
+            <p>Built and shipped. Ordered as listed in facts.md.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {facts.projects.map((project) => (
@@ -94,15 +80,17 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Experience section */}
-        <section id="experience" className="grid gap-12 print-break">
-          <h2 className="font-mono font-semibold text-foreground text-2xl">Experience</h2>
+        <section id="experience" className="section print-break">
+          <div className="section-header">
+            <h2>Experience</h2>
+            <p>Roles and what I shipped.</p>
+          </div>
           <div className="space-y-6">
             {facts.experience.map((exp) => (
-              <article key={exp.employer} className="border-b border-solid border-border pb-6 last:border-0">
+              <article key={exp.employer} className="card border-b border-solid border-border pb-6 last:border-0">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-2">
                   <div>
-                    <h3 className="font-mono font-semibold text-foreground">
+                    <h3 className="font-inter font-semibold text-foreground">
                       {exp.role}
                     </h3>
                     <p className="text-sm font-mono text-muted">
@@ -126,13 +114,15 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Skills section */}
-        <section id="skills" className="grid gap-12 print-break">
-          <h2 className="font-mono font-semibold text-foreground text-2xl">Skills</h2>
+        <section id="skills" className="section print-break">
+          <div className="section-header">
+            <h2>Skills</h2>
+            <p>Tools and technologies I work with.</p>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {facts.skills.map((group) => (
-              <div key={group.area} className="border border-solid border-border rounded-lg p-4">
-                <h3 className="font-mono font-semibold text-foreground mb-2">
+              <div key={group.area} className="card">
+                <h3 className="font-inter font-semibold text-foreground mb-2">
                   {group.area}
                 </h3>
                 <p className="text-sm font-mono text-muted">
@@ -143,10 +133,12 @@ export default function Home() {
           </div>
         </section>
 
-        {/* About section */}
-        <section id="about" className="grid gap-12 print-break">
-          <h2 className="font-mono font-semibold text-foreground text-2xl">About</h2>
-          <div className="border border-solid border-border rounded-lg p-6">
+        <section id="about" className="section print-break">
+          <div className="section-header">
+            <h2>About</h2>
+            <p>Background and context.</p>
+          </div>
+          <div className="card">
             <p className="text-sm font-mono text-muted leading-relaxed">
               {facts.name} is a final-year BS Information Technology student at
               Bahria University Islamabad, graduating January 2027. Based in
@@ -164,38 +156,20 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Contact section */}
-        <section id="contact" className="grid gap-12 print-break">
-          <h2 className="font-mono font-semibold text-foreground text-2xl">Contact</h2>
-          <div className="border border-solid border-border rounded-lg p-6 text-center">
+        <section id="contact" className="section print-break">
+          <div className="section-header">
+            <h2>Contact</h2>
+            <p>Get in touch.</p>
+          </div>
+          <div className="card p-6 text-center">
             <p className="text-sm font-mono text-muted mb-4">
               Resume · GitHub · LinkedIn · Email
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-3">
-              <a
-                href={resumeHref}
-                className="flex h-10 min-w-fit items-center justify-center gap-2 rounded-full border border-solid border-current px-4 text-xs font-mono text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-              >
-                Resume
-              </a>
-              <a
-                href={facts.links.github}
-                className="flex h-10 min-w-fit items-center justify-center gap-2 rounded-full border border-solid border-current px-4 text-xs font-mono text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-              >
-                GitHub
-              </a>
-              <a
-                href={facts.links.linkedin}
-                className="flex h-10 min-w-fit items-center justify-center gap-2 rounded-full border border-solid border-current px-4 text-xs font-mono text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-              >
-                LinkedIn
-              </a>
-              <a
-                href={`mailto:${facts.links.email}`}
-                className="flex h-10 min-w-fit items-center justify-center gap-2 rounded-full border border-solid border-current px-4 text-xs font-mono text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-              >
-                Email
-              </a>
+              {contactBtn(resumeHref, "Resume")}
+              {contactBtn(facts.links.github, "GitHub")}
+              {contactBtn(facts.links.linkedin, "LinkedIn")}
+              {contactBtn(`mailto:${facts.links.email}`, "Email")}
             </div>
           </div>
         </section>
@@ -209,7 +183,7 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-2 text-sm font-mono text-muted">
             {facts.name} · {facts.location} ·{" "}
-            <a href={`mailto:${facts.links.email}`} className="underline underline-offset-3">
+            <a href={`mailto:${facts.links.email}`} className="underline underline-offset-4">
               {facts.links.email}
             </a>
           </div>
