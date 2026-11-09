@@ -1,10 +1,13 @@
 import { chromium, test, expect } from "@playwright/test";
 
+const BASE = "http://127.0.0.1:3000";
+const SKIP_BOOT = "?__skip_boot=true";
+
 test("kube-triage replay renders trace, frames, and final report", async () => {
-  const browser = await chromium.connectOverCDP("http://localhost:9222");
+  const browser = await chromium.launch({ headless: true, args: ["--no-sandbox"] });
   const page = await browser.newPage();
   try {
-    await page.goto("/projects/kube-triage/replay/sample-001/0");
+    await page.goto(`${BASE}/projects/kube-triage/replay/sample-001/0${SKIP_BOOT}`, { timeout: 15000, waitUntil: "domcontentloaded" });
     await page.waitForLoadState("networkidle");
 
     // Page title
@@ -46,10 +49,10 @@ test("kube-triage replay renders trace, frames, and final report", async () => {
 });
 
 test("replay listing page shows available traces", async () => {
-  const browser = await chromium.connectOverCDP("http://localhost:9222");
+  const browser = await chromium.launch({ headless: true, args: ["--no-sandbox"] });
   const page = await browser.newPage();
   try {
-    await page.goto("/projects/kube-triage/replay");
+    await page.goto(`${BASE}/projects/kube-triage/replay${SKIP_BOOT}`, { timeout: 15000, waitUntil: "domcontentloaded" });
     await page.waitForLoadState("networkidle");
 
     await expect(page.locator("h1")).toContainText("Break-It Replay");

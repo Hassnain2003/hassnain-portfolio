@@ -1,42 +1,34 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Lost · Hassnain Abbas",
+  title: "404 · Hassnain Abbas",
   description: "This page does not exist. Return to the home page.",
 };
 
 export default function NotFound() {
   return (
-    <div className="mx-auto max-w-2xl px-6 py-24 text-center">
-      <h1 className="text-6xl font-mono font-bold tracking-tight text-foreground">
-        Lost.
-      </h1>
-      <p className="mt-4 text-lg text-muted">
-        No page at this path.{" "}
-        <Link href="/" className="underline underline-offset-4 hover:text-accent">
-          Return home
-        </Link>
-        .
-      </p>
-      <div className="mt-10 border border-solid border-border rounded-lg p-6 bg-panel text-left">
-        <p className="text-xs font-mono text-muted uppercase tracking-tighter mb-2">
-          Try ⌘K
-        </p>
-        <p className="text-sm font-mono text-muted leading-relaxed">
-          The command palette is pre-opened on every page. Press{" "}
-          <span className="font-mono font-bold text-foreground">⌘K</span> (or{" "}
-          <span className="font-mono font-bold text-foreground">Ctrl+K</span>) to
-          jump to a section, case study, the chat, or toggle the theme.
-        </p>
-        <div className="mt-4 border-t border-solid border-border/50 pt-3 flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-accent" aria-hidden="true" />
-          <span className="text-xs font-mono text-muted">Sections · Case studies · Theme · Resume · Chat</span>
+    <div className="min-h-screen bg-[#050505] flex flex-col items-center justify-center text-foreground p-6 font-mono">
+        <div className="border border-solid border-border p-6 max-w-lg w-full text-[12px]">
+          <div className="flex items-center gap-2 mb-4 border-b border-solid border-border pb-2">
+            <span className="w-3 h-3 rounded-full bg-red-500" />
+            <span className="w-3 h-3 rounded-full bg-yellow-500" />
+            <span className="w-3 h-3 rounded-full bg-green-500" />
+          </div>
+          <h1 className="mb-4 text-red-500">404 — SYSTEM NOT FOUND</h1>
+          <pre className="mb-4">Error: route not found in agent.os kernel.</pre>
+        <pre className="mb-6 text-muted">
+          Press <span className="text-accent font-bold">⌘K</span> to open the
+          command palette, or{" "}
+        </pre>
+        <div className="mt-4">
+          <Link
+            href="/"
+            className="inline-block border border-solid border-current px-3 py-1 text-xs hover:bg-current hover:text-accent-foreground transition-colors"
+          >
+            &gt; reboot to home
+          </Link>
         </div>
       </div>
-      <p className="mt-8 text-sm font-mono text-muted">
-        Tip: everything on this site is static HTML — ⌘P prints a one-page
-        resume from the Home page.
-      </p>
     </div>
   );
 }
