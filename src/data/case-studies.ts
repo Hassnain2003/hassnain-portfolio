@@ -60,7 +60,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     links: {
       code: "https://github.com/Hassnain2003/kube-triage",
       live: undefined,
-      demo: undefined,
+      demo: "/projects/kube-triage/replay/sample-001/0",
       results: "docs/results.md",
     },
   },

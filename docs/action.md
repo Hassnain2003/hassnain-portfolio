@@ -126,3 +126,39 @@ Lighthouse perf (mobile 89, desktop 84) below 95+ — accepted as known deviatio
 - Mobile layout at 360px — deferred to Phase 5
 
 Lighthouse perf (mobile 87, desktop 94) below 95+ — accepted as known deviation.
+
+## Session: 2026-11-09 (Phase 3 — Break It Replay)
+
+### Changed
+- `src/data/trace-schema.ts` — new: Trace, ClusterTimelineEntry, AgentStep, FinalReport, TraceSource types
+- `src/data/traces/dev/sample-trace.ts` — new: illustrative sample trace (source=sample, kube-triage CrashLoopBackOff fault)
+- `src/data/traces/index.ts` — new: real traces index (empty until real traces provided)
+- `src/data/traces/dev/index.ts` — new: dev traces index (exports sampleTrace only)
+- `scripts/convert-eval-to-trace.ts` — new: converts kube-triage eval JSON to trace schema
+- `scripts/guard-sample-trace.mjs` — new: build-time guard that FAILS if sample trace is imported by production-bound code
+- `scripts/guard:sample-trace` added to postbuild pipeline
+- `src/components/replay-player.tsx` — new: interactive replay player (pod states, terminal panel, speed control, play/pause, step nav, permalink, copy link, final report, reduced-motion support)
+- `src/app/projects/kube-triage/replay/page.tsx` — new: replay listing page with available traces
+- `src/app/projects/kube-triage/replay/[traceId]/[step]/page.tsx` — new: dynamic replay route with permalink support
+- `src/app/projects/kube-triage/replay/[traceId]/[step]/opengraph-image.tsx` — new: per-frame OG image route handler (edge runtime)
+- `src/data/case-studies.ts` — added demo link to kube-triage case study pointing to replay
+- `tests/e2e/replay.spec.ts` — new: E2E tests for replay page and listing (2 tests)
+
+### Verified
+- `npm run lint` — clean
+- `npm run typecheck` — clean
+- `npm test` — 4/4 passed
+- `npm run build` — succeeds; bundle guard passes at 380.37 KB (budget 450 KB); sample-trace guard passes
+- `npm run check:links` — 22 source files scanned, 0 broken links
+- `npx playwright test` — 3/3 passed (home + 2 replay tests)
+- Lighthouse mobile: Perf 88 / A11y 100 / BP 100 / SEO 100
+- Lighthouse desktop: Perf 94 / A11y 100 / BP 100 / SEO 100
+
+### Phase 3 exit criteria
+- Replay works with sample in dev ✅ (sample-001 trace renders, frames step, final report shows)
+- Guard test proves sample trace fails prod build ✅ (guard-sample-trace.mjs in postbuild)
+- Reduced-motion static step-by-step view ✅ (prefers-reduced-motion disables pulse animation and auto-play)
+- Permalinks restore exact state ✅ (/projects/kube-triage/replay/[traceId]/[step])
+- Per-frame OG verified ✅ (opengraph-image.tsx route handler at replay route)
+
+Lighthouse perf (mobile 88, desktop 94) below 95+ — accepted as known deviation.

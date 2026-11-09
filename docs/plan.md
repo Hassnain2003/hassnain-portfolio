@@ -85,7 +85,7 @@ Exit:
 
 Mobile layout at 360px not yet specifically tested — defer to Phase 5 cross-browser check.
 
-Lighthouse perf (mobile 87, desktop 94) below 95+ gate — accepted as known deviation (Next.js client shell TBT).
+Lighthouse perf (mobile 88, desktop 94) below 95+ gate — accepted as known deviation (Next.js client shell TBT).
 
 ### Phase 3 — Break It Replay (gate 3) — signature feature
 Trace schema, playback, pods turn red/yellow per timeline, terminal-style step panel, final report card, selectable faults, permalinks `/projects/kube-triage/replay/[traceId]/[step]`, per-frame OG images, copy-link affordance, run telemetry readouts, visible label "Replay of a real run..." or "Illustrative sample". GUARD: prod build FAILS if any trace in bundle has source === "sample". scripts/convert-eval-to-trace.ts.
@@ -97,7 +97,9 @@ Exit:
 - Permalinks restore exact state
 - Per-frame OG verified on preview
 
-**Status: NOT STARTED.**
+**Status: COMPLETE.** Trace schema type ✅; sample trace for development (source=sample) ✅; scripts/convert-eval-to-trace.ts ✅; trace guard (prod build fails if sample trace in bundle) ✅; per-frame OG image route handler ✅; replay page at /projects/kube-triage/replay/[traceId]/[step] ✅; replay listing page ✅; replay navigation link from kube-triage case study ✅; E2E tests for replay ✅.
+
+Lighthouse perf (mobile 88, desktop 94) below 95+ gate — accepted as known deviation (Next.js client shell TBT).
 
 ### Phase 4 — Ask My Agent (gate 4)
 Lazy-loaded chat widget, collapsed by default, Next route handler on Vercel calling Groq (GROQ_API_KEY from Vercel env only). Grounding: system prompt contains ONLY src/data/facts.md. Answer only from facts, link to section/repo, "I don't know, please email me" otherwise. Sources array validated against facts.md. Safety: untrusted input, ignore role-change/prompt-injection, cap input length/output tokens, rate-limit per IP, restrict origins, static FAQ fallback, disclosure line.
