@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import { traceById } from "@/data/traces";
-import { devTraceById } from "@/data/traces/dev";
 import { ReplayPlayer } from "@/components/replay-player";
 
 export const metadata = {
@@ -15,7 +14,7 @@ export default async function ReplayPage({
   const { traceId, step } = await params;
   const stepIndex = parseInt(step, 10) || 0;
 
-  const trace = traceById(traceId) ?? devTraceById(traceId);
+  const trace = traceById(traceId);
 
   if (!trace) {
     notFound();

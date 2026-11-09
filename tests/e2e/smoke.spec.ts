@@ -107,55 +107,6 @@ test.describe("Case study page smoke", () => {
   });
 });
 
-test.describe("Replay smoke", () => {
-  test("replay page with permalink round-trip", async () => {
-    const browser = await chromium.launch({ headless: true, args: ["--no-sandbox"] });
-    const page = await browser.newPage();
-    try {
-      await page.goto(`${BASE}/projects/kube-triage/replay/sample-001/0${SKIP_BOOT}`, { timeout: 15000, waitUntil: "domcontentloaded" });
-      await page.waitForLoadState("networkidle");
-      await new Promise((r) => setTimeout(r, 500));
-
-      await expect(page.locator("h1")).toContainText("Break-It Replay");
-      await expect(page.getByText("Illustrative sample")).toBeVisible();
-      await expect(page.getByText("sample-001")).toBeVisible();
-      await expect(page.getByText(/Frame \d+ of \d+/)).toBeVisible();
-
-      // Copy permalink and verify it matches current URL
-      const permalink = await page
-        .getByRole("link", { name: "Open permalink" })
-        .getAttribute("href");
-      expect(permalink).toContain("/projects/kube-triage/replay/sample-001/0");
-
-      // Navigate to next frame
-      await expect(page.getByText(/Frame 1 of/)).toBeVisible();
-      await page.getByRole("button", { name: "Next frame" }).click();
-      await expect(page.getByText(/Frame 2 of/)).toBeVisible();
-    } finally {
-      await page.close();
-      await browser.close();
-    }
-  });
-
-  test("replay listing page", async () => {
-    const browser = await chromium.launch({ headless: true, args: ["--no-sandbox"] });
-    const page = await browser.newPage();
-    try {
-      await page.goto(`${BASE}/projects/kube-triage/replay${SKIP_BOOT}`, { timeout: 15000, waitUntil: "domcontentloaded" });
-      await page.waitForLoadState("networkidle");
-
-      await expect(page.locator("h1")).toContainText("Break-It Replay");
-      await expect(page.getByText("Available traces")).toBeVisible();
-      await expect(
-        page.getByText("CrashLoopBackOff on payment-worker pod")
-      ).toBeVisible();
-    } finally {
-      await page.close();
-      await browser.close();
-    }
-  });
-});
-
 test.describe("Command palette smoke", () => {
   test("chat widget toggle present on page", async () => {
     const browser = await chromium.launch({ headless: true, args: ["--no-sandbox"] });

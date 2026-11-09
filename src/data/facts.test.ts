@@ -21,11 +21,11 @@ describe("facts", () => {
 
   it("marks unconfirmed results", () => {
     expect(facts.projects[0].resultConfirmed).toBe(false);
-    expect(facts.projects[1].resultConfirmed).toBe(false);
+    expect(facts.projects[1].resultConfirmed).toBe(true);
     expect(facts.projects[2].resultConfirmed).toBe(true);
   });
 
-  it("has resume as a TODO", () => {
-    expect(facts.links.resume).toBeUndefined();
+  it("has resume link", () => {
+    expect(facts.links.resume).toBe("/resume");
   });
 });

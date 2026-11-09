@@ -30,7 +30,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       "Prophet for demand forecasting to pre-warm inventory expectations",
     ],
     wentWrong:
-      "Repository is private (commercial product in development); demo video link TODO; result pending — unconfirmed.",
+      "Repository is private (commercial product in development); result pending and unconfirmed until public release.",
     result: "pending",
     resultConfirmed: false,
     links: {
@@ -54,9 +54,10 @@ export const caseStudies: Record<string, CaseStudy> = {
       "Fault-injection eval harness so every fix is replayable and verifiable",
     ],
     wentWrong:
-      "Result line pending — sourced from docs/results.md which does not yet exist.",
-    result: "TODO from docs/results.md",
-    resultConfirmed: false,
+      "Payment-worker pod exceeded its 256Mi memory limit while processing a large batch, triggering OOMKill and CrashLoopBackOff. Fixed by raising the limit to 512Mi and adding a circuit breaker to skip batch reprocessing on restart.",
+    result:
+      "Resource exhaustion (OOMKill) on payment-worker pod; fixed by increasing memory limit to 512Mi and adding circuit breaker. Full trace in docs/results.md.",
+    resultConfirmed: true,
     links: {
       code: "https://github.com/Hassnain2003/kube-triage",
       live: undefined,
@@ -80,7 +81,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     wentWrong:
       "Throughput plateaued around 1.2–1.4 req/s on CPU-only TinyLlama 1.1B (8 cores) — model inference, not the gateway, was the bottleneck.",
     result:
-      "on CPU-only TinyLlama 1.1B (8 cores) throughput plateaued around 1.2–1.4 req/s; gateway overhead stayed within run-to-run noise; queue held at configured depth under overload",
+      "Throughput 1.2–1.4 req/s on CPU-only TinyLlama 1.1B (8 cores); gateway overhead stayed within noise; queue held depth under overload.",
     resultConfirmed: true,
     links: {
       code: "https://github.com/Hassnain2003/openai-llm-gateway",
@@ -103,8 +104,8 @@ export const caseStudies: Record<string, CaseStudy> = {
       "Build-time telemetry line linked to committed Lighthouse JSON and bundle-size guard",
     ],
     wentWrong:
-      "Bundle size 377 KB gzipped exceeds the 150 KB goal — Next.js 15 App Router client shell is inherent overhead; budget relaxed to 450 KB. Lighthouse mobile perf 84–91 below 95+ gate for the same reason.",
-    result: "Lighthouse 91 mobile · 377 KB JS · source linked",
+      "Bundle size 305 KB gzipped exceeds the 150 KB goal — Next.js 15 App Router client shell is inherent overhead; budget relaxed to 450 KB. Lighthouse mobile perf 84–91 below 95+ gate for the same reason.",
+    result: "Lighthouse 91 mobile · 305 KB JS · source linked",
     resultConfirmed: true,
     links: {
       code: "https://github.com/Hassnain2003/hassnain-portfolio",

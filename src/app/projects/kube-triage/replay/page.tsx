@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { traceIds, traceById } from "@/data/traces";
-import { devTraceIds, devTraceById } from "@/data/traces/dev";
 
 export const metadata = {
   title: "Break-It Replay — kube-triage",
@@ -8,10 +7,7 @@ export const metadata = {
 };
 
 export default function ReplayListing() {
-  const allTraces = [
-    ...traceIds().map((id) => ({ ...traceById(id)!, source: "real" as const })),
-    ...devTraceIds().map((id) => ({ ...devTraceById(id)!, source: "sample" as const })),
-  ];
+  const allTraces = traceIds().map((id) => ({ ...traceById(id)!, source: "real" as const }));
 
   return (
     <article className="mx-auto max-w-4xl px-6 py-12">
@@ -48,13 +44,9 @@ export default function ReplayListing() {
                     </p>
                   </div>
                   <span
-                    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-mono ${
-                      trace.source === "sample"
-                        ? "bg-accent/10 text-accent border border-solid border-accent/20"
-                        : "bg-blue-500/10 text-blue-400 border border-solid border-blue-500/20"
-                    }`}
+                    className="bg-blue-500/10 text-blue-400 border border-solid border-blue-500/20 inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-mono"
                   >
-                    {trace.source === "sample" ? "Illustrative sample" : "Real run"}
+                    Real run
                   </span>
                 </div>
                 <p className="text-sm font-mono text-muted mb-4">

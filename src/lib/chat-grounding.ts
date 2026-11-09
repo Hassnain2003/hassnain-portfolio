@@ -22,13 +22,13 @@ Education: ${facts.education}
 GitHub: ${facts.links.github}
 LinkedIn: ${facts.links.linkedin}
 Email: ${facts.links.email}
-Resume: ${facts.links.resume ?? "TODO (file to be added)"}
+Resume: ${facts.links.resume ?? "/resume"}
 
 ## Projects
 ${facts.projects.map((p) => `
 ### ${p.name}
 ${p.description}
-Repo: ${p.repo ?? "TODO (to be published)"}
+Repo: ${p.repo ?? "not published"}
 Live: ${p.live ?? "none"}
 Demo: ${p.demo ?? "none"}
 Status: ${p.status}

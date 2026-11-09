@@ -1,11 +1,10 @@
 import type { Trace } from "@/data/trace-schema";
-import { sampleTrace } from "./sample-trace";
 
-// Development-only traces. These are clearly marked with source === "sample"
-// and must NEVER be included in production builds. The guard-sample-trace
-// build script enforces this.
+// Development-only traces. This index is intentionally empty — sample traces
+// have been removed so that zero sample traces ship in production. The
+// guard-sample-trace build script enforces this.
 
-export const devTraces: Trace[] = [sampleTrace];
+export const devTraces: Trace[] = [];
 
 export const devTraceById = (id: string): Trace | undefined => devTraces.find((t) => t.id === id);
 

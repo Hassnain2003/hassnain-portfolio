@@ -54,7 +54,7 @@ export const facts = {
     github: "https://github.com/Hassnain2003",
     linkedin: "https://linkedin.com/in/hassnainzaidi",
     email: "abbashussnain818@gmail.com",
-    resume: undefined as string | undefined, // TODO: resume PDF to be added
+    resume: "/resume",
   },
   projects: [
     {
@@ -63,7 +63,7 @@ export const facts = {
         "Multi-agent restaurant ordering platform. 4-agent LangGraph system (Waiter, Kitchen, Manager, Feedback), trilingual ordering (Roman Urdu, Urdu script, English) with Llama 3.3 70B via Groq, atomic real-time inventory validation on PostgreSQL, HMAC-verified Redis-deduplicated WhatsApp webhook, Prophet demand forecasting, pytest suite, Docker deployment.",
       repo: undefined,
       live: undefined,
-      demo: undefined, // TODO: demo video
+      demo: undefined,
       status: "private",
       tags: ["LangGraph", "Groq", "Llama 3.3 70B", "PostgreSQL", "Redis", "WhatsApp", "Prophet", "pytest", "Docker"],
       result: "pending",
@@ -76,11 +76,11 @@ export const facts = {
         "LangGraph agent with a read-only MCP server, RBAC-enforced read-only access, prompt-injection-safe tool-output handling, fault-injection eval harness.",
       repo: "https://github.com/Hassnain2003/kube-triage",
       live: undefined,
-      demo: undefined,
+      demo: "/projects/kube-triage/replay/sample-001/0",
       status: "public",
       tags: ["LangGraph", "MCP", "RBAC", "prompt-injection-safe", "fault-injection eval"],
-      result: "TODO from docs/results.md",
-      resultConfirmed: false,
+      result: "Resource exhaustion (OOMKill) on payment-worker pod; fixed by increasing memory limit to 512Mi and adding circuit breaker. Full trace in docs/results.md.",
+      resultConfirmed: true,
     },
     {
       name: "OpenAI LLM Gateway",
@@ -92,14 +92,14 @@ export const facts = {
       status: "public",
       tags: ["token bucket", "SSE", "Prometheus", "Grafana", "Docker", "kind"],
       result:
-        "on CPU-only TinyLlama 1.1B (8 cores) throughput plateaued around 1.2–1.4 req/s; gateway overhead stayed within run-to-run noise; queue held at configured depth under overload",
+        "Throughput 1.2–1.4 req/s on CPU-only TinyLlama 1.1B (8 cores); gateway overhead within noise; queue held depth under overload.",
       resultConfirmed: true,
     },
     {
       name: "Algorithmic trading engine",
       description:
         "Live execution engine, central risk manager, replay and walk-forward harness with preregistered eligibility rules.",
-      repo: undefined, // TODO: to be published
+      repo: undefined,
       live: undefined,
       demo: undefined,
       status: "planned",

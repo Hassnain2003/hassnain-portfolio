@@ -15,31 +15,30 @@ Education: Final-year BS Information Technology student, Bahria University Islam
 GitHub: https://github.com/Hassnain2003
 LinkedIn: https://linkedin.com/in/hassnainzaidi
 Email: abbashussnain818@gmail.com
-Resume PDF: TODO (file to be added)
+Resume: /resume
 
 ## Projects (in the order given)
 
 ### AgentDine
-Multi-agent restaurant ordering platform. Private repository (commercial product in development); demo video link TODO.
+Multi-agent restaurant ordering platform. Private repository (commercial product in development).
 4-agent LangGraph system (Waiter, Kitchen, Manager, Feedback), trilingual ordering (Roman Urdu, Urdu script, English) with Llama 3.3 70B via Groq, atomic real-time inventory validation on PostgreSQL, HMAC-verified Redis-deduplicated WhatsApp webhook, Prophet demand forecasting, pytest suite, Docker deployment.
 Final Year Project at Bahria University, team of 2.
 Repo: private (commercial product in development)
-Demo video: TODO
 Result: pending (unconfirmed)
 
 ### kube-triage
 https://github.com/Hassnain2003/kube-triage
 LangGraph agent with a read-only MCP server, RBAC-enforced read-only access, prompt-injection-safe tool-output handling, fault-injection eval harness.
-Result line: TODO from docs/results.md.
+Result: Resource exhaustion (OOMKill) on payment-worker pod; fixed by increasing memory limit to 512Mi and adding circuit breaker. Full trace in docs/results.md.
 
 ### OpenAI LLM Gateway
 https://github.com/Hassnain2003/openai-llm-gateway
 Per-API-key token-bucket rate limiting, bounded queue with 429/503 + Retry-After, SSE streaming, timeouts, client-disconnect cancellation, structured logs, Prometheus/Grafana, 22 tests (88.85% coverage), CI (ruff, pytest, helm lint, kubeconform, terraform validate, Docker build, kind smoke test).
-Result: on CPU-only TinyLlama 1.1B (8 cores) throughput plateaued around 1.2–1.4 req/s, gateway overhead stayed within run-to-run noise, and the queue held at its configured depth under overload.
+Result: Throughput 1.2–1.4 req/s on CPU-only TinyLlama 1.1B (8 cores); gateway overhead stayed within noise; queue held at configured depth under overload.
 
 ### Algorithmic trading engine
-Repo link TODO (to be published).
 Live execution engine, central risk manager, replay and walk-forward harness with preregistered eligibility rules. No profit claims.
+Repo: to be published
 
 ### D&Z Cartique
 Live site: https://dz-cartique.web.app

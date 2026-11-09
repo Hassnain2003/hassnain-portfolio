@@ -104,9 +104,9 @@ export function ProjectCard({
               Code
             </Link>
           ) : (
-            <span className="flex items-center gap-2 rounded-full border border-solid border-accent/30 px-3 py-1 text-xs font-mono text-accent/60">
-              Code · TODO
-            </span>
+              <span className="flex items-center gap-2 rounded-full border border-solid border-accent/30 px-3 py-1 text-xs font-mono text-accent/60">
+                Code · {status}
+              </span>
           )}
           {live ? (
             <Link
