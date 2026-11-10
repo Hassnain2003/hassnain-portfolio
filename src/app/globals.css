@@ -945,3 +945,94 @@ a:hover {
   .boot-overlay, .dock, .window-controls, .window-btn { display: none !important; }
   a { text-decoration: none; color: inherit; }
 }
+
+/* ===== Phase 5: Scroll Reveal ===== */
+.reveal-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+.reveal-content {
+  opacity: 0;
+  transform: translateY(1rem);
+  transition: opacity 400ms ease, transform 400ms ease;
+}
+.reveal-content.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Phase 5: Hover Utilities ===== */
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(0, 242, 255, 0.15);
+}
+.hover-glow:hover {
+  box-shadow: 0 0 25px rgba(0, 242, 255, 0.3);
+  border-color: var(--accent);
+}
+
+/* ===== Phase 5: Contrast / Accessibility Fixes ===== */
+/* Body text — ensure high contrast against dark grid */
+.text-body,
+.text-body * {
+  color: var(--color-neutral-50) !important;
+}
+
+/* Muted text — lighten for WCAG AA on dark background */
+.text-muted\/90 {
+  color: rgba(240, 240, 240, 0.9) !important;
+}
+
+/* Small text on grid — add subtle backdrop for readability */
+.text-grid-safe {
+  background: rgba(2, 2, 5, 0.7);
+  padding: 0.1rem 0.25rem;
+  border-radius: 0.2rem;
+}
+
+/* Ensure focus states are clearly visible */
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ===== Phase 5: Mobile Responsiveness ===== */
+@media (max-width: 768px) {
+  /* Reduce particle count on mobile for performance */
+  .hero-canvas {
+    height: 320px !important;
+  }
+
+  /* Project Galaxy labels — ensure readability on small screens */
+  .node-label {
+    font-size: 10px !important;
+    padding: 0.15rem 0.4rem !important;
+  }
+
+  /* Section padding on mobile */
+  .section {
+    padding: 3rem 0 !important;
+  }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-content {
+    transition: none !important;
+    opacity: 1;
+    transform: none !important;
+  }
+  .animate-pulse,
+  .animate-pulse-slow {
+    animation: none !important;
+    opacity: 1;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

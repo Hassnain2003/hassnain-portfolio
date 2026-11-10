@@ -5,6 +5,7 @@ import { facts } from "@/data/facts";
 import { ChatWidget } from "@/components/chat-widget";
 import { SpatialNav } from "@/components/spatial-nav";
 import { Hero3D } from "@/components/hero-3d";
+import { ScrollReveal } from "@/components/scroll-reveal";
 import { ExperienceSection } from "@/components/experience-section";
 import { SkillsSection } from "@/components/skills-section";
 import { AboutSection } from "@/components/about-section";
@@ -32,17 +33,29 @@ export default function Home() {
       <SpatialNav />
 
       <main id="main" className="flex-1 relative">
-        <Hero3D />
+        <ScrollReveal delay={100}>
+          <Hero3D />
+        </ScrollReveal>
 
-        <ProjectGalaxyDynamic />
+        <ScrollReveal delay={200}>
+          <ProjectGalaxyDynamic />
+        </ScrollReveal>
 
-        <ExperienceSection />
+        <ScrollReveal delay={300}>
+          <ExperienceSection />
+        </ScrollReveal>
 
-        <SkillsSection />
+        <ScrollReveal delay={400}>
+          <SkillsSection />
+        </ScrollReveal>
 
-        <AboutSection />
+        <ScrollReveal delay={500}>
+          <AboutSection />
+        </ScrollReveal>
 
-        <ContactSection />
+        <ScrollReveal delay={600}>
+          <ContactSection />
+        </ScrollReveal>
       </main>
 
       <footer className="border-t border-border/50 bg-black/60 backdrop-blur py-8 mt-auto">
@@ -52,13 +65,7 @@ export default function Home() {
             <span>Spatial build · WebGL-accelerated</span>
           </div>
           <div className="flex items-center gap-2 text-xs font-mono text-muted/70">
-            {facts.name} · {facts.location} ·{" "}
-            <a
-              href={`mailto:${facts.links.email}`}
-              className="underline underline-offset-4 hover:text-accent transition-colors"
-            >
-              {facts.links.email}
-            </a>
+            {facts.name} · {facts.location}
           </div>
         </div>
       </footer>

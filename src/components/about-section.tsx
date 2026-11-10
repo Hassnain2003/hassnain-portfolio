@@ -56,7 +56,7 @@ export function AboutSection() {
 
         {/* Stats grid — 5 callouts */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-          <div className="glass-panel-sm stat-card group relative overflow-hidden">
+          <div className="glass-panel-sm stat-card group relative overflow-hidden hover-lift">
             <div className="absolute inset-0 bg-gradient-to-t from-accent/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="relative z-10 flex items-center justify-center w-14 h-14 rounded-2xl bg-accent/10 mx-auto mb-3 group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-500">
               <span className="text-accent font-display font-bold text-2xl">🎓</span>
@@ -64,7 +64,7 @@ export function AboutSection() {
             <span className="block text-label text-accent stat-number mb-1">Bahria University</span>
             <span className="text-caption text-muted/70 font-mono uppercase">BS Information Technology</span>
           </div>
-          <div className="glass-panel-sm stat-card group relative overflow-hidden">
+          <div className="glass-panel-sm stat-card group relative overflow-hidden hover-lift">
             <div className="absolute inset-0 bg-gradient-to-t from-accent-2/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="relative z-10 flex items-center justify-center w-14 h-14 rounded-2xl bg-accent/10 mx-auto mb-3 group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-500">
               <span className="text-accent font-display font-bold text-2xl">📅</span>
@@ -72,7 +72,7 @@ export function AboutSection() {
             <span className="block text-label text-accent stat-number mb-1">January 2027</span>
             <span className="text-caption text-muted/70 font-mono uppercase">Graduation</span>
           </div>
-          <div className="glass-panel-sm stat-card group relative overflow-hidden">
+          <div className="glass-panel-sm stat-card group relative overflow-hidden hover-lift">
             <div className="absolute inset-0 bg-gradient-to-t from-accent/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="relative z-10 flex items-center justify-center w-14 h-14 rounded-2xl bg-accent/10 mx-auto mb-3 group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-500">
               <span className="text-accent font-display font-bold text-2xl">📍</span>
@@ -80,7 +80,7 @@ export function AboutSection() {
             <span className="block text-label text-accent stat-number mb-1">Islamabad</span>
             <span className="text-caption text-muted/70 font-mono uppercase">Based in</span>
           </div>
-          <div className="glass-panel-sm stat-card group relative overflow-hidden">
+          <div className="glass-panel-sm stat-card group relative overflow-hidden hover-lift">
             <div className="absolute inset-0 bg-gradient-to-t from-success/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="relative z-10 flex items-center justify-center w-14 h-14 rounded-2xl bg-success/10 mx-auto mb-3 group-hover:bg-success group-hover:text-success transition-all duration-500">
               <span className="text-success font-display font-bold text-2xl">🧪</span>
@@ -88,7 +88,7 @@ export function AboutSection() {
             <span className="block text-label text-success stat-number mb-1">29 / 30</span>
             <span className="text-caption text-muted/70 font-mono uppercase">fault-injection eval pass rate</span>
           </div>
-          <div className="glass-panel-sm stat-card group relative overflow-hidden">
+          <div className="glass-panel-sm stat-card group relative overflow-hidden hover-lift">
             <div className="absolute inset-0 bg-gradient-to-t from-warning/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="relative z-10 flex items-center justify-center w-14 h-14 rounded-2xl bg-warning/10 mx-auto mb-3 group-hover:bg-warning group-hover:text-warning transition-all duration-500">
               <span className="text-warning font-display font-bold text-2xl">📉</span>

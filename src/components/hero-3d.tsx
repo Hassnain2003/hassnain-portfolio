@@ -178,7 +178,7 @@ export function Hero3D() {
           Hassnain<span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-accent-2 to-white"> Abbas</span>
         </h1>
 
-        <div className="relative w-full max-w-[500px] h-[500px] md:h-[600px] flex items-center justify-center">
+        <div className="relative w-full max-w-[500px] h-[500px] md:h-[600px] flex items-center justify-center hero-canvas">
           <Canvas camera={{ position: [0, 0, 10], fov: 45 }} shadows>
             <ambientLight intensity={0.3} />
             <pointLight position={[10, 10, 10]} intensity={0.8} color="#00f2ff" />

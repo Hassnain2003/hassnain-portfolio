@@ -19,7 +19,7 @@ export function ExperienceSection() {
           {facts.experience.map((exp, i) => (
             <article
               key={exp.employer}
-              className="relative pl-20 pr-8 py-8 mb-8"
+              className="relative pl-20 pr-8 py-8 mb-8 hover-lift"
             >
               {/* Timeline node dot */}
               <div className="absolute left-[53px] top-[16px] w-4 h-4 rounded-full bg-accent border-2 border-surface-background shadow-[0_0_10px_rgba(0,242,255,0.6)]" />

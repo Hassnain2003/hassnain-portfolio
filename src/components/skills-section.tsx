@@ -53,7 +53,7 @@ export function SkillsSection() {
                   return (
                     <span
                       key={item}
-                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded border border-solid transition-all duration-200 ${
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded border border-solid transition-all duration-200 hover-lift ${
                         isHighlighted
                           ? "border-accent bg-accent/10 text-accent font-bold"
                           : "border-border/60 text-muted/70 bg-black/20 group-hover:border-accent/50 group-hover:bg-accent/5 group-hover:text-foreground"
