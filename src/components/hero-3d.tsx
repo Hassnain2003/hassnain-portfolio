@@ -1,10 +1,20 @@
  "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { BoxGeometry, SphereGeometry, Points, PointsMaterial, BufferGeometry, Float32BufferAttribute, Line, LineBasicMaterial } from "three";
 import * as THREE from "three";
+import Link from "next/link";
 import { facts } from "@/data/facts";
+
+const PROJECT_NODES = [
+  { name: "AgentDine", x: -4, y: 2, z: -3, color: 0xbc13fe },
+  { name: "kube-triage", x: 4, y: 1, z: -3, color: 0x00f2ff },
+  { name: "OpenAI LLM Gateway", x: 0, y: 3, z: -5, color: 0x00ff88 },
+  { name: "Algorithmic trading engine", x: -5, y: -1, z: 0, color: 0xffb000 },
+  { name: "D&Z Cartique", x: 4, y: -1, z: 3, color: 0x00f2ff },
+  { name: "QLSS", x: -1, y: -3, z: 4, color: 0x00ff88 },
+];
 
 function HolographicCube({ color = 0x00f2ff }: { color?: number }) {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -36,7 +46,7 @@ function HolographicCube({ color = 0x00f2ff }: { color?: number }) {
   );
 }
 
-function DataNode({ x, y, z, color }: { x: number; y: number; z: number; color: number }) {
+function DataNode({ name, x, y, z, color, onPointerOver, onPointerOut }: { name: string; x: number; y: number; z: number; color: number; onPointerOver?: () => void; onPointerOut?: () => void }) {
   const meshRef = useRef<THREE.Mesh>(null);
   const geoRef = useRef(new SphereGeometry(0.15, 16, 16));
   const matRef = useRef(
@@ -57,7 +67,16 @@ function DataNode({ x, y, z, color }: { x: number; y: number; z: number; color: 
     (meshRef.current.material as THREE.MeshStandardMaterial).opacity = 0.6 + Math.sin(time * 3 + x) * 0.3;
   });
 
-  return <mesh ref={meshRef} position={[x, y, z]} geometry={geoRef.current} material={matRef.current} />;
+  return (
+    <mesh
+      ref={meshRef}
+      position={[x, y, z]}
+      geometry={geoRef.current}
+      material={matRef.current}
+      onPointerOver={onPointerOver}
+      onPointerOut={onPointerOut}
+    />
+  );
 }
 
 function ParticleField() {
@@ -117,10 +136,11 @@ function ConnectionLines({ centerX, centerY, centerZ }: { centerX: number; cente
 }
 
 export function Hero3D() {
-  const contactBtn = (href: string, label: string) => (
+  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
+  const contactBtn = (href: string, label: string, variant: "primary" | "secondary" = "primary") => (
     <a
       href={href}
-      className="btn btn-primary"
+      className={`btn ${variant === "primary" ? "btn-primary" : "btn-outline"}`}
       target={href.startsWith("mailto") ? undefined : "_blank"}
       rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
     >
@@ -141,20 +161,20 @@ export function Hero3D() {
         />
       </div>
 
-      <div className="relative mx-auto max-w-6xl px-6 flex flex-col items-center gap-8 max-w-4xl">
-        <div className="flex items-center gap-3 mt-6">
+      <div className="relative mx-auto max-w-6xl px-6 flex flex-col items-center gap-4 max-w-4xl">
+        <div className="flex items-center gap-3 mt-4">
           <div
             className="w-10 h-10 rounded-lg bg-accent/20 border border-accent/30 flex items-center justify-center text-accent font-bold text-sm animate-pulse"
             style={{ animationDuration: "2s" }}
           >
             <span className="w-6 h-6 rounded bg-accent flex items-center justify-center text-[10px] font-bold">HA</span>
           </div>
-          <span className="font-mono text-xs text-muted uppercase tracking-wider">
+          <span className="text-label text-muted uppercase tracking-wider">
             SYSTEM ONLINE
           </span>
         </div>
 
-        <h1 className="font-display font-black text-6xl md:text-8xl tracking-tight text-foreground leading-tight mb-6 text-center">
+        <h1 className="text-heading text-foreground mb-4 text-center">
           Hassnain<span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-accent-2 to-white"> Abbas</span>
         </h1>
 
@@ -167,12 +187,18 @@ export function Hero3D() {
 
             <ConnectionLines centerX={0} centerY={0} centerZ={0} />
 
-            <DataNode x={-4} y={2} z={-3} color={0xbc13fe} />
-            <DataNode x={4} y={1} z={-3} color={0x00f2ff} />
-            <DataNode x={0} y={3} z={-5} color={0x00ff88} />
-            <DataNode x={-5} y={-1} z={0} color={0xffb000} />
-            <DataNode x={4} y={-1} z={3} color={0x00f2ff} />
-            <DataNode x={-1} y={-3} z={4} color={0x00ff88} />
+            {PROJECT_NODES.map((node) => (
+              <DataNode
+                key={node.name}
+                name={node.name}
+                x={node.x}
+                y={node.y}
+                z={node.z}
+                color={node.color}
+                onPointerOver={() => setHoveredNode(node.name)}
+                onPointerOut={() => setHoveredNode(null)}
+              />
+            ))}
 
             <HolographicCube color={0x00f2ff} />
 
@@ -180,18 +206,23 @@ export function Hero3D() {
           </Canvas>
         </div>
 
-        <p className="mt-8 text-lg md:text-xl text-muted max-w-2xl font-inter leading-relaxed text-center mx-auto">
-          I build LLM agents and the infrastructure they run on — LangGraph, MCP,
-          Kubernetes, rate-limited gateways, and fault-injection tested systems.
-          Final-year BS IT student at Bahria University Islamabad, graduating
-          January 2027.
+        {hoveredNode && (
+          <div className="mt-2 flex items-center gap-1 text-label text-accent font-mono">
+            <span className="w-1 h-1 rounded-full bg-accent" />
+            {hoveredNode}
+          </div>
+        )}
+
+        <p className="mt-6 text-body text-muted/90 leading-relaxed text-center mx-auto max-w-[42rem]">
+          <span className="block text-accent text-subhead font-sans font-semibold mb-2">
+            I build LLM agents and the infrastructure they run on.
+          </span>
+          LangGraph, MCP, Kubernetes, rate-limited gateways, fault-injection tested systems.
         </p>
 
-        <div className="mt-12 flex flex-wrap justify-center gap-4">
-          {contactBtn(facts.links.resume || "#resume", "Resume")}
-          {contactBtn(facts.links.github, "GitHub")}
-          {contactBtn(facts.links.linkedin, "LinkedIn")}
-          {contactBtn(`mailto:${facts.links.email}`, "Email")}
+        <div className="mt-8 flex flex-wrap justify-center gap-4">
+          {contactBtn("#projects", "View Work", "primary")}
+          {contactBtn(facts.links.resume || "#resume", "Resume", "secondary")}
         </div>
       </div>
     </section>

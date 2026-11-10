@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, Home, Code, Layers, Monitor, Mail, GraduationCap, LayoutGrid } from "lucide-react";
+import { Menu, Home, Code, Layers, Monitor, Mail, GraduationCap, LayoutGrid, Github, Linkedin } from "lucide-react";
+import { facts } from "@/data/facts";
 
 const NAV_ITEMS = [
   { label: "Home", href: "/", icon: Home },
@@ -57,6 +58,33 @@ export function SpatialNav() {
         </div>
 
         <div className="flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-2">
+            <a
+              href={facts.links.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 rounded-lg border border-border/50 text-muted/70 hover:text-accent hover:border-accent/50 transition-all"
+              aria-label="GitHub"
+            >
+              <Github size={16} />
+            </a>
+            <a
+              href={facts.links.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 rounded-lg border border-border/50 text-muted/70 hover:text-accent hover:border-accent/50 transition-all"
+              aria-label="LinkedIn"
+            >
+              <Linkedin size={16} />
+            </a>
+            <a
+              href={`mailto:${facts.links.email}`}
+              className="p-2 rounded-lg border border-border/50 text-muted/70 hover:text-accent hover:border-accent/50 transition-all"
+              aria-label="Email"
+            >
+              <Mail size={16} />
+            </a>
+          </div>
           <button
             onClick={() => setOpen(!open)}
             className="p-2 rounded-lg border border-border/50 text-muted/70 hover:text-accent hover:border-accent/50 transition-all"
