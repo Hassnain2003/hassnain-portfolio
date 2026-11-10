@@ -1,16 +1,21 @@
 export function GlassPanel({
   children,
   className = "",
-  padding = "p-6",
+  variant = "default",
 }: {
   children: React.ReactNode;
   className?: string;
-  padding?: string;
+  variant?: "default" | "sm" | "lg" | "raised";
 }) {
+  const variantClasses = {
+    default: "glass-panel",
+    sm: "glass-panel-sm",
+    lg: "glass-panel-lg",
+    raised: "glass-raised p-7",
+  };
+
   return (
-    <div
-      className={`glass ${padding} ${className}`}
-    >
+    <div className={`${variantClasses[variant]} ${className}`}>
       {children}
     </div>
   );
