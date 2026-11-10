@@ -44,7 +44,7 @@ export function SpatialNav() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 bg-transparent ${isActive ? "bg-accent/10 text-accent border border-accent/30" : "text-muted/70 hover:text-accent hover:bg-accent/5 hover:border-accent/50"}`}
                 onClick={() => { setActive(item.href); setOpen(false); }}
                 aria-current={isActive ? "page" : undefined}
               >

@@ -1,9 +1,8 @@
  "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Html } from "@react-three/drei";
-import { SphereGeometry, BoxGeometry, BufferGeometry, Float32BufferAttribute, Line, LineBasicMaterial, PointsMaterial } from "three";
+import { SphereGeometry, BoxGeometry, BufferGeometry, Float32BufferAttribute, Line, LineBasicMaterial, PointsMaterial, Vector3 } from "three";
 import * as THREE from "three";
 import { facts } from "@/data/facts";
 import Link from "next/link";
@@ -30,11 +29,11 @@ const PROJECT_META: Record<string, {
 };
 
 const PROJECT_POSITIONS: Record<string, { x: number; y: number; z: number }> = {
-  AgentDine: { x: -5, y: 2, z: -4 },
-  "kube-triage": { x: 5, y: 1, z: -4 },
+  AgentDine: { x: -4, y: 2, z: -4 },
+  "kube-triage": { x: 4, y: 1, z: -4 },
   "OpenAI LLM Gateway": { x: 0, y: 3, z: -6 },
-  "Algorithmic trading engine": { x: -6, y: -1, z: 0 },
-  "D&Z Cartique": { x: 4, y: -1, z: 2 },
+  "Algorithmic trading engine": { x: -5, y: -1, z: 0 },
+  "D&Z Cartique": { x: 3, y: -1, z: 2 },
   QLSS: { x: -1, y: -3, z: 4 },
 };
 
@@ -48,6 +47,8 @@ const PROJECT_TAGS: Record<string, string[]> = {
 };
 
 const SIZE_RADIUS: Record<string, number> = { small: 0.25, medium: 0.35, large: 0.5 };
+
+const DEFAULT_SELECTED = "AgentDine";
 
 function ProjectNode({ name, x, y, z, onSelect }: { name: string; x: number; y: number; z: number; onSelect: (name: string) => void }) {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -78,37 +79,15 @@ function ProjectNode({ name, x, y, z, onSelect }: { name: string; x: number; y: 
   });
 
   return (
-    <>
-      <mesh
-        ref={meshRef}
-        position={[x, y, z]}
-        geometry={geometry}
-        material={material}
-        onClick={() => onSelect(name)}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
-      />
-      <Html
-        sprite
-        style={{
-          pointerEvents: "none",
-          userSelect: "none",
-          transform: "translate(-50%, -100%)",
-          whiteSpace: "nowrap",
-          fontSize: isPlanned ? "10px" : "11px",
-          fontFamily: "'JetBrains Mono', monospace",
-          fontWeight: isPlanned ? 500 : 700,
-          color: isPlanned ? "#6b6b80" : style.color,
-          textShadow: isPlanned ? "none" : `0 0 8px ${style.color}`,
-          textTransform: "uppercase",
-          letterSpacing: "0.05em",
-          opacity: hovered ? 1 : isPlanned ? 0.5 : 0.9,
-          transition: "opacity 0.2s ease",
-        }}
-      >
-        {name}
-      </Html>
-    </>
+    <mesh
+      ref={meshRef}
+      position={[x, y, z]}
+      geometry={geometry}
+      material={material}
+      onClick={() => onSelect(name)}
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
+    />
   );
 }
 
@@ -168,7 +147,35 @@ function ConnectionLines({ centerX, centerY, centerZ }: { centerX: number; cente
   return linesRef.current ? <primitive object={linesRef.current} /> : null;
 }
 
-const DEFAULT_SELECTED = "AgentDine";
+function HolographicCube({ color = 0x00f2ff }: { color?: number }) {
+  const meshRef = useRef<THREE.Mesh>(null);
+  const geoRef = useRef(new BoxGeometry(1.2, 1.2, 1.2));
+  const matRef = useRef(
+    new THREE.MeshStandardMaterial({
+      color,
+      emissive: color,
+      emissiveIntensity: 1,
+      transparent: true,
+      opacity: 0.9,
+      wireframe: true,
+    })
+  );
+
+  useFrame((state) => {
+    if (!meshRef.current) return;
+    const time = state.clock.getElapsedTime();
+    meshRef.current.rotation.x = time * 0.3;
+    meshRef.current.rotation.y = time * 0.5;
+    meshRef.current.rotation.z = time * 0.2;
+    meshRef.current.scale.setScalar(1 + Math.sin(time * 2) * 0.05);
+  });
+
+  return (
+    <mesh ref={meshRef} geometry={geoRef.current} material={matRef.current} castShadow>
+      <pointLight position={[0, 0, 2]} intensity={0.5} color={color} />
+    </mesh>
+  );
+}
 
 export function ProjectGalaxy() {
   const [selected, setSelected] = useState<string | null>(DEFAULT_SELECTED);
@@ -189,6 +196,30 @@ export function ProjectGalaxy() {
   lineGeometry.setAttribute("position", new Float32BufferAttribute(linePositions, 3));
   const lineMaterial = new LineBasicMaterial({ color: 0x00f2ff, transparent: true, opacity: 0.15 });
 
+  // Screen-projected label positions
+  const canvasRef = useRef<HTMLDivElement>(null);
+  const [labelPositions, setLabelPositions] = useState<Record<string, { x: number; y: number }>>({});
+
+  useFrame((state) => {
+    if (!canvasRef.current || !state.camera) return;
+    const camera = state.camera;
+    const canvasEl = canvasRef.current;
+    const width = canvasEl.clientWidth;
+    const height = canvasEl.clientHeight;
+
+    const newPositions: Record<string, { x: number; y: number }> = {};
+    facts.projects.forEach((p) => {
+      const pos = PROJECT_POSITIONS[p.name];
+      if (!pos) return;
+      const worldPos = new Vector3(pos.x, pos.y + SIZE_RADIUS[PROJECT_META[p.name].size] + 0.4, pos.z);
+      const screenPos = worldPos.clone().project(camera);
+      const x = (screenPos.x * 0.5 + 0.5) * width;
+      const y = (-(screenPos.y * 0.5) + 0.5) * height;
+      newPositions[p.name] = { x, y };
+    });
+    setLabelPositions(newPositions);
+  });
+
   return (
     <section id="projects" className="section relative overflow-hidden">
       <div className="absolute inset-0 -z-10">
@@ -204,8 +235,9 @@ export function ProjectGalaxy() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="h-[600px] md:h-[700px] rounded-2xl border border-border/50 bg-black/30 backdrop-blur-sm relative flex flex-col">
-            <div className="flex-1 relative">
+          {/* Graph container with padding to prevent clipping */}
+          <div className="h-[600px] md:h-[700px] rounded-2xl border border-border/50 bg-black/30 backdrop-blur-sm relative overflow-hidden">
+            <div className="absolute inset-0" ref={canvasRef}>
               <Canvas camera={{ position: [0, 0, 12], fov: 45 }} shadows>
                 <ambientLight intensity={0.4} />
                 <pointLight position={[10, 10, 10]} intensity={0.8} color="#00f2ff" />
@@ -232,36 +264,50 @@ export function ProjectGalaxy() {
               </Canvas>
             </div>
 
-            {/* Legend */}
-            <div className="mt-4 p-4 rounded-xl border border-border/60 bg-black/40 backdrop-blur-sm text-xs font-mono">
-              <h5 className="text-accent font-semibold mb-3 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-accent" />
-                Legend
-              </h5>
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-[#bc13fe]" />
-                  <span className="text-muted/80">Agents & LLM</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-[#00f2ff]" />
-                  <span className="text-muted/80">Infrastructure</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-[#00ff88]" />
-                  <span className="text-muted/80">Full-stack</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full border border-solid border-current/30 bg-transparent" />
-                  <span className="text-muted/60 italic">Planned (not shipped)</span>
-                </div>
-              </div>
+            {/* Screen-projected node labels */}
+            <div className="absolute inset-0 pointer-events-none">
+              {facts.projects.map((p) => {
+                const pos = labelPositions[p.name];
+                const meta = PROJECT_META[p.name];
+                const style = CATEGORY_STYLE[meta.category];
+                const isPlanned = meta.status === "planned";
+                if (!pos) return null;
+
+                // Compute label className
+                let labelClass = "px-1.5 py-0.5 rounded text-[9px] font-mono font-bold uppercase tracking-tighter";
+                if (isPlanned) {
+                  labelClass += " text-muted/60 border border-muted/40 bg-muted/10";
+                } else if (style.color === "#bc13fe") {
+                  labelClass += " text-accent-2 border-accent-2/30 bg-accent-2/10";
+                } else if (style.color === "#00f2ff") {
+                  labelClass += " text-accent border-accent/30 bg-accent/10";
+                } else {
+                  labelClass += " text-success border-success/30 bg-success/10";
+                }
+
+                return (
+                  <div
+                    key={p.name}
+                    className="absolute flex flex-col items-center gap-1 transition-opacity duration-200"
+                    style={{
+                      left: `${pos.x}px`,
+                      top: `${pos.y}px`,
+                      transform: "translate(-50%, -100%)",
+                      opacity: isPlanned ? 0.5 : 0.9,
+                    }}
+                  >
+                    <span className={labelClass}>
+                      {p.name}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
           {/* Selected project detail panel */}
           {selected && project && (
-            <div className="lg:hidden glass p-6 rounded-xl border border-accent/50 shadow-[0_0_40px_rgba(0,242,255,0.2)]">
+            <div className="lg:block glass p-6 rounded-xl border border-accent/50 shadow-[0_0_40px_rgba(0,242,255,0.2)] overflow-y-auto max-h-[calc(100vh-8rem)]">
               <button
                 onClick={() => setSelected(null)}
                 className="absolute top-2 right-2 h-8 w-8 rounded border border-solid border-current/30 flex items-center justify-center text-xs text-foreground hover:bg-accent/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
@@ -328,9 +374,9 @@ export function ProjectGalaxy() {
           )}
         </div>
 
-        {/* Desktop detail panel (right side) */}
+        {/* Mobile detail panel (small screens) */}
         {selected && project && (
-          <div className="lg:block glass p-6 rounded-xl border border-accent/50 shadow-[0_0_40px_rgba(0,242,255,0.2)]">
+          <div className="lg:hidden glass p-6 rounded-xl border border-accent/50 shadow-[0_0_40px_rgba(0,242,255,0.2)] overflow-y-auto max-h-[calc(100vh-8rem)] mt-4">
             <button
               onClick={() => setSelected(null)}
               className="absolute top-2 right-2 h-8 w-8 rounded border border-solid border-current/30 flex items-center justify-center text-xs text-foreground hover:bg-accent/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
@@ -397,35 +443,5 @@ export function ProjectGalaxy() {
         )}
       </div>
     </section>
-  );
-}
-
-function HolographicCube({ color = 0x00f2ff }: { color?: number }) {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const geoRef = useRef(new BoxGeometry(1.2, 1.2, 1.2));
-  const matRef = useRef(
-    new THREE.MeshStandardMaterial({
-      color,
-      emissive: color,
-      emissiveIntensity: 1,
-      transparent: true,
-      opacity: 0.9,
-      wireframe: true,
-    })
-  );
-
-  useFrame((state) => {
-    if (!meshRef.current) return;
-    const time = state.clock.getElapsedTime();
-    meshRef.current.rotation.x = time * 0.3;
-    meshRef.current.rotation.y = time * 0.5;
-    meshRef.current.rotation.z = time * 0.2;
-    meshRef.current.scale.setScalar(1 + Math.sin(time * 2) * 0.05);
-  });
-
-  return (
-    <mesh ref={meshRef} geometry={geoRef.current} material={matRef.current} castShadow>
-      <pointLight position={[0, 0, 2]} intensity={0.5} color={color} />
-    </mesh>
   );
 }
