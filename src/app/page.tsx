@@ -155,7 +155,7 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="window-body">
-                  <p className="text-sm font-mono text-muted">
+                  <p className="text-sm font-inter text-muted leading-relaxed">
                     {group.items.join(", ")}
                   </p>
                 </div>
@@ -179,18 +179,8 @@ export default function Home() {
               </div>
             </div>
             <div className="window-body">
-              <p className="text-sm font-mono text-muted leading-relaxed">
-                {facts.name} is a final-year BS Information Technology student at
-                Bahria University Islamabad, graduating January 2027. Based in
-                {facts.location}. Builds AI agents and backend infrastructure —
-                LangGraph, MCP, LangChain, Groq, PostgreSQL, Redis, Docker,
-                Kubernetes, Terraform.
-              </p>
-              <p className="mt-4 text-sm font-mono text-muted leading-relaxed">
-                Leadership:{ " "}
-                {facts.leadership
-                  .map((l) => `${l.role} at ${l.organization} (${l.period})`)
-                  .join("; ")}.
+              <p className="text-sm font-inter text-muted leading-relaxed">
+                {facts.bio}
               </p>
             </div>
           </div>
