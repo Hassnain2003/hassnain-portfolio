@@ -27,20 +27,13 @@ export function SpatialNav() {
       <div
         className="glass px-6 py-4 flex items-center justify-between backdrop-blur-md border-b border-border/50"
       >
-        <Link
-          href="/"
-          className="flex items-center gap-2 group"
-          onClick={() => { setActive("/"); setOpen(false); }}
-        >
+        <div className="flex items-center gap-2 group">
           <div
             className="w-8 h-8 rounded bg-accent text-accent-foreground flex items-center justify-center font-bold text-xs tracking-wider shadow-[0_0_20px_rgba(0,242,255,0.4)] group-hover:shadow-[0_0_30px_rgba(0,242,255,0.6)] transition-shadow"
           >
             HA
           </div>
-          <span className="font-display font-bold text-xl tracking-tight text-foreground">
-            Nexus<span className="text-accent">.dev</span>
-          </span>
-        </Link>
+        </div>
 
         <div className="hidden md:flex items-center gap-6">
           {NAV_ITEMS.map((item) => {

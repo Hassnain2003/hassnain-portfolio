@@ -78,7 +78,7 @@ export function Hero3D() {
       </div>
 
       <div className="relative mx-auto max-w-6xl px-6 flex flex-col items-start gap-6 max-w-4xl">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 mt-6">
           <div
             className="w-10 h-10 rounded-lg bg-accent/20 border border-accent/30 flex items-center justify-center text-accent font-bold text-sm animate-pulse"
             style={{ animationDuration: "2s" }}

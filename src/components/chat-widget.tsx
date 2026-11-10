@@ -138,12 +138,13 @@ export function ChatWidget() {
       <button
         id="chat-toggle"
         onClick={toggleChat}
-        className="fixed bottom-6 right-6 z-50 flex h-10 w-10 items-center justify-center rounded-full border border-solid border-current bg-background/90 backdrop-blur px-3 text-xs font-mono text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className="fixed bottom-8 right-8 z-50 flex flex-col items-center justify-center gap-1 h-auto w-auto rounded-full border border-solid border-accent/50 bg-background/90 backdrop-blur px-4 py-2 text-xs font-mono text-accent transition-all hover:bg-accent/20 hover:text-accent hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
         aria-label="Open chat assistant"
-        title="Ask my agent"
+        title="Chat with AI Assistant"
       >
-        <span className="sr-only">chat</span>
-        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <span className="text-[10px] font-mono font-bold uppercase tracking-wider">chat with ai</span>
+        <span className="text-[10px] font-mono font-bold uppercase tracking-wider">assistant</span>
+        <svg className="h-5 w-5 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
