@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function Resume() {
   return (
-    <div className="min-h-screen bg-[#050505] text-foreground p-6 md:p-10 font-mono print-hidden">
+    <div className="min-h-screen bg-[#050505] text-foreground p-6 md:p-10 font-inter print-hidden">
       <div className="max-w-4xl mx-auto border border-solid border-border p-8 print-break">
         <header className="mb-8 text-center">
           <h1 className="font-inter font-bold text-4xl md:text-5xl tracking-tight">
@@ -17,7 +17,7 @@ export default function Resume() {
           <p className="mt-2 text-lg text-muted">
             {facts.role}
           </p>
-          <p className="mt-1 text-xs text-muted">
+          <p className="mt-1 text-sm text-muted">
             {facts.location} ·{" "}
             <a
               href={`mailto:${facts.links.email}`}
@@ -26,7 +26,7 @@ export default function Resume() {
               {facts.links.email}
             </a>
           </p>
-          <div className="mt-4 flex justify-center gap-4 text-xs">
+          <div className="mt-4 flex justify-center gap-4 text-sm">
             <a
               href={facts.links.github}
               className="underline underline-offset-4 hover:text-accent transition-colors"
@@ -64,7 +64,7 @@ export default function Resume() {
               <h3 className="font-inter font-semibold text-lg mb-1">
                 {exp.role}
               </h3>
-              <p className="text-xs font-mono text-muted mb-2">
+              <p className="text-sm font-inter text-muted mb-2">
                 {exp.employer} · {exp.period}
                 {exp.location && ` · ${exp.location}`}
               </p>
@@ -87,14 +87,14 @@ export default function Resume() {
                 <h4 className="font-inter font-semibold text-sm mb-2">
                   {project.name}
                 </h4>
-                <p className="text-[11px] text-muted mb-2 leading-relaxed">
+                <p className="text-sm text-muted mb-2 leading-relaxed">
                   {project.description}
                 </p>
-                <p className="text-[10px] font-mono text-muted uppercase tracking-wider">
+                <p className="text-xs font-inter text-muted uppercase tracking-wider">
                   Status: {project.status}
                 </p>
                 {project.repo && (
-                  <p className="mt-2 text-[10px] font-mono text-muted">
+                  <p className="mt-2 text-xs font-inter text-muted">
                     Repo:{" "}
                     <a
                       href={project.repo}
@@ -105,7 +105,7 @@ export default function Resume() {
                   </p>
                 )}
                 {project.live && (
-                  <p className="mt-1 text-[10px] font-mono text-muted">
+                  <p className="mt-1 text-xs font-inter text-muted">
                     Live:{" "}
                     <a
                       href={project.live}
@@ -151,8 +151,8 @@ export default function Resume() {
           </ul>
         </section>
 
-        <footer className="mt-8 pt-4 border-t border-solid border-border text-center text-[10px] text-muted uppercase tracking-wider">
-          Generated from facts.md · agent.os · {facts.location}
+        <footer className="mt-8 pt-4 border-t border-solid border-border text-center text-xs text-muted uppercase tracking-wider">
+          Generated from facts.md · portfolio · {facts.location}
         </footer>
       </div>
     </div>

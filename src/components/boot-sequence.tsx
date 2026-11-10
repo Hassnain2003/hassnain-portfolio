@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 const BOOT_LINES = [
-  "agent.os v1.0.0 initializing...",
+  "portfolio v1.0.0 initializing...",
   "loading kernel modules...",
   "mounting filesystem...",
   "initializing network stack...",

@@ -36,9 +36,9 @@ export default function Home() {
             className="flex items-center gap-2 font-inter font-bold text-lg tracking-tight text-foreground"
           >
             <span className="flex h-5 w-5 items-center justify-center rounded border border-solid border-accent bg-accent px-0.5 text-accent-foreground text-xs font-bold">
-              HR
+              HA
             </span>
-            <span className="tracking-tight">AGENT.OS</span>
+            <span className="tracking-tight">Portfolio</span>
           </Link>
           <div className="flex items-center gap-3">
             <span className="text-xs font-mono text-muted">
@@ -57,9 +57,6 @@ export default function Home() {
       <main id="main" className="flex-1 relative mx-auto max-w-6xl px-6 pb-32">
         <section id="hero" className="section pt-20 pb-24 border-b-0">
           <div className="flex flex-col items-start gap-4 max-w-2xl">
-            <span className="text-xs font-mono text-accent uppercase tracking-widest">
-              agent.os :: portfolio
-            </span>
             <h1 className="font-inter font-bold text-5xl md:text-7xl tracking-tight text-foreground leading-tight">
               Hassnain Abbas
             </h1>
@@ -232,7 +229,7 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="flex items-center gap-2 text-xs font-mono text-muted">
             <span className="led led-ok" aria-hidden="true" />
-            Agent OS · static build · no client framework required to read
+            static build · no client framework required to read
           </div>
           <div className="flex items-center gap-2 text-xs font-mono text-muted">
             {facts.name} · {facts.location} ·{" "}
