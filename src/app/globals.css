@@ -471,9 +471,18 @@ a:hover {
   outline-offset: 2px;
 }
 
+/* Desktop window container */
+.desktop {
+  position: relative;
+  background:
+    radial-gradient(circle at 25% 25%, rgba(0, 255, 65, 0.03), transparent 35%),
+    radial-gradient(circle at 75% 75%, rgba(59, 130, 246, 0.03), transparent 35%);
+  border: 1px solid var(--border);
+  border-radius: 0;
+}
+
 /* Print */
 @media print {
-  body { background: #ffffff !important; color: #0a0a0a !important; }
   .boot-overlay, .dock, .window-controls, .window-btn { display: none !important; }
   a { text-decoration: none; color: inherit; }
 }

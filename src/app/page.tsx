@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { facts } from "@/data/facts";
-import { ProjectCard } from "@/components/project-card";
+import { ProjectWindow } from "@/components/project-card";
 import { ChatWidget } from "@/components/chat-widget";
 import { SystemMap } from "@/components/system-map";
 import { BootSequence } from "@/components/boot-sequence";
@@ -90,15 +90,15 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Projects as windows */}
-        <section id="projects" className="section">
-          <div className="section-header">
+        {/* Projects as draggable OS windows */}
+        <section id="projects" className="section relative min-h-[700px]">
+          <div className="section-header absolute top-0 left-0 right-0 z-20">
             <h2>Deployed Projects</h2>
-            <p>Each project runs in its own window. Drag, stack, inspect.</p>
+            <p>Each project runs in its own draggable window. Click to open, drag to move, stack to inspect.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {facts.projects.map((project) => (
-              <ProjectCard key={project.name} window={true} {...project} />
+          <div className="desktop relative w-full h-[700px] overflow-visible">
+            {facts.projects.map((project, i) => (
+              <ProjectWindow key={project.name} index={i} {...project} />
             ))}
           </div>
         </section>
