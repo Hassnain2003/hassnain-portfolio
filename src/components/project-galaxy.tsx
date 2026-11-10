@@ -1,9 +1,8 @@
  "use client";
 
 import { useRef, useState } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Html, Text } from "@react-three/drei";
-import { SphereGeometry, BoxGeometry, BufferGeometry, Float32BufferAttribute, Line, LineBasicMaterial, PointsMaterial, Vector3 } from "three";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { SphereGeometry, BoxGeometry, BufferGeometry, Float32BufferAttribute, Line, LineBasicMaterial, PointsMaterial } from "three";
 import * as THREE from "three";
 import { facts } from "@/data/facts";
 import Link from "next/link";
@@ -51,9 +50,34 @@ const SIZE_RADIUS: Record<string, number> = { small: 0.25, medium: 0.35, large: 
 
 const DEFAULT_SELECTED = "AgentDine";
 
-// Label that lives inside Canvas using drei's Html for screen-projected positioning
+// Label that tracks its 3D node via screen-space projection inside Canvas
 function NodeLabel({ name, x, y, z }: { name: string; x: number; y: number; z: number }) {
-  const { size } = useThree();
+  const ref = useRef<HTMLDivElement>(null);
+  const [labelStyle, setLabelStyle] = useState<React.CSSProperties>({});
+
+  useFrame((state) => {
+    if (!ref.current) return;
+    const { camera, size } = state;
+    const worldPos = new THREE.Vector3(x, y + SIZE_RADIUS[PROJECT_META[name].size] + 0.4, z);
+    const screenPos = worldPos.clone().project(camera);
+    const width = size.width;
+    const height = size.height;
+    const nx = (screenPos.x * 0.5 + 0.5) * width;
+    const ny = (-(screenPos.y * 0.5) + 0.5) * height;
+    // Hide when behind camera
+    if (screenPos.z < -1 || screenPos.z > 1) {
+      setLabelStyle({ ...labelStyle, opacity: 0, pointerEvents: "none" as const });
+    } else {
+      setLabelStyle({
+        left: `${nx}px`,
+        top: `${ny}px`,
+        transform: "translate(-50%, -100%)",
+        opacity: 0.9,
+        pointerEvents: "auto" as const,
+      });
+    }
+  });
+
   const meta = PROJECT_META[name];
   const style = CATEGORY_STYLE[meta.category];
   const isPlanned = meta.status === "planned";
@@ -70,29 +94,13 @@ function NodeLabel({ name, x, y, z }: { name: string; x: number; y: number; z: n
   }
 
   return (
-    <Html
-      prepend
-      center
-      style={{
-        pointerEvents: "none",
-        userSelect: "none",
-        whiteSpace: "nowrap",
-        fontSize: isPlanned ? "10px" : "11px",
-        fontFamily: "'JetBrains Mono', monospace",
-        fontWeight: isPlanned ? 500 : 700,
-        color: isPlanned ? "#6b6b80" : style.color,
-        textShadow: isPlanned ? "none" : `0 0 8px ${style.color}`,
-        textTransform: "uppercase",
-        letterSpacing: "0.05em",
-        opacity: isPlanned ? 0.5 : 0.9,
-        transform: "translate(-50%, -100%)",
-      }}
-      position={[x, y + SIZE_RADIUS[meta.size] + 0.4, z]}
+    <div
+      ref={ref}
+      className="absolute flex flex-col items-center gap-1 transition-opacity duration-200 pointer-events-none"
+      style={labelStyle}
     >
-      <div className={labelClass}>
-        {name}
-      </div>
-    </Html>
+      <span className={labelClass}>{name}</span>
+    </div>
   );
 }
 
