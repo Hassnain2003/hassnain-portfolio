@@ -164,6 +164,8 @@ a:hover {
   flex-direction: column;
   gap: 0.75rem;
   margin-bottom: 3rem;
+  align-items: center;
+  text-align: center;
 }
 
 .section-header h2 {
@@ -174,10 +176,23 @@ a:hover {
   font-size: 2rem;
   color: var(--fg);
   margin: 0;
-  background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+  background: linear-gradient(135deg, #fff 0%, var(--accent) 50%, var(--accent-2) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.4));
+  position: relative;
+}
+
+.section-header h2::after {
+  content: "";
+  position: absolute;
+  bottom: -0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4rem;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
 }
 
 .section-header p {
@@ -185,6 +200,92 @@ a:hover {
   font-size: 0.95rem;
   margin: 0;
   max-width: 42rem;
+}
+
+/* Section card hover effects */
+.section-card {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.section-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0, 242, 255, 0.03) 0%, rgba(188, 19, 254, 0.03) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.section-card:hover::before {
+  opacity: 1;
+}
+
+.section-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 30px rgba(0, 242, 255, 0.15);
+  transform: translateY(-4px);
+}
+
+/* Experience item hover */
+.experience-item {
+  transition: all 0.3s ease;
+  border-left: 2px solid var(--accent);
+}
+
+.experience-item:hover {
+  background: rgba(0, 242, 255, 0.03);
+  border-left-color: var(--accent-2);
+  transform: translateX(8px);
+}
+
+/* Skill container hover */
+.skill-container {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.skill-container:hover {
+  border-color: var(--accent);
+  background: rgba(0, 242, 255, 0.05);
+  transform: translateY(-6px);
+  box-shadow: 0 0 25px rgba(0, 242, 255, 0.15);
+}
+
+.skill-container:hover .skill-dot {
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+/* Dot for lists */
+.list-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: all 0.3s ease;
+}
+
+/* About stat cards hover */
+.stat-card {
+  transition: all 0.3s ease;
+  border: 1px solid var(--border);
+}
+
+.stat-card:hover {
+  border-color: var(--accent);
+  background: rgba(0, 242, 255, 0.05);
+  transform: translateY(-4px);
+}
+
+.stat-card:hover .stat-number {
+  color: var(--accent);
+  text-shadow: 0 0 15px rgba(0, 242, 255, 0.6);
 }
 
 .btn {

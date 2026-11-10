@@ -9,10 +9,10 @@ export function ExperienceSection() {
         <h2>Experience</h2>
         <p>Professional journey and what I&apos;ve shipped.</p>
       </div>
-      <div className="glass p-8 md:p-12 rounded-2xl">
-        <div className="space-y-8">
+      <div className="glass p-8 md:p-12 rounded-2xl section-card">
+        <div className="space-y-6">
           {facts.experience.map((exp) => (
-            <article key={exp.employer} className="border-l-2 border-l-accent pl-6 py-4">
+            <article key={exp.employer} className="border-l-2 border-l-accent pl-6 py-4 experience-item">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-3">
                 <div>
                   <h3 className="font-display font-bold text-lg text-foreground">{exp.role}</h3>
@@ -29,9 +29,12 @@ export function ExperienceSection() {
                   )}
                 </div>
               </div>
-              <ul className="list-disc list-inside space-y-2 text-sm text-muted/80 leading-relaxed">
+              <ul className="space-y-2 text-sm text-muted/80 leading-relaxed">
                 {exp.description.map((d) => (
-                  <li key={d}>{d}</li>
+                  <li key={d} className="flex items-start gap-2">
+                    <span className="list-dot mt-1.5" />
+                    {d}
+                  </li>
                 ))}
               </ul>
               { (exp as { attribution?: string }).attribution && (
