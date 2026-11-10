@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { BoxGeometry, SphereGeometry, TorusKnotGeometry, IcosahedronGeometry, BufferGeometry, Float32BufferAttribute } from "three";
+import { BoxGeometry, SphereGeometry, TorusKnotGeometry, IcosahedronGeometry, Points, PointsMaterial, BufferGeometry, Float32BufferAttribute } from "three";
 import * as THREE from "three";
 import { facts } from "@/data/facts";
 
