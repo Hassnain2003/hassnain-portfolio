@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { facts } from "@/data/facts";
 
 export const metadata = {
