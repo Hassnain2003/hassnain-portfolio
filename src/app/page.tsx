@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { facts } from "@/data/facts";
-import { ProjectWindow } from "@/components/project-card";
+import { TerminalFileBrowser } from "@/components/project-card";
 import { ChatWidget } from "@/components/chat-widget";
 import { SystemMap } from "@/components/system-map";
 import { BootSequence } from "@/components/boot-sequence";
@@ -90,16 +90,14 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Projects as draggable OS windows */}
+        {/* Projects as terminal file browser */}
         <section id="projects" className="section relative min-h-[700px]">
           <div className="section-header absolute top-0 left-0 right-0 z-20">
             <h2>Deployed Projects</h2>
-            <p>Each project runs in its own draggable window. Click to open, drag to move, stack to inspect.</p>
+            <p>Terminal file browser — ls -la style. Click a file to cat its details.</p>
           </div>
-          <div className="desktop relative w-full h-[700px] overflow-visible">
-            {facts.projects.map((project, i) => (
-              <ProjectWindow key={project.name} index={i} {...project} />
-            ))}
+          <div className="relative w-full h-[700px] overflow-visible">
+            <TerminalFileBrowser projects={facts.projects} />
           </div>
         </section>
 

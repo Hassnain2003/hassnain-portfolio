@@ -41,13 +41,13 @@ test.describe("Home page smoke", () => {
 
       // Project cards scoped to projects section
       await expect(
-        page.locator("#projects").getByRole("heading", { name: "AgentDine" })
+        page.locator("#projects").getByText("AgentDine")
       ).toBeVisible();
       await expect(
-        page.locator("#projects").getByRole("heading", { name: "kube-triage" })
+        page.locator("#projects").getByText("kube-triage")
       ).toBeVisible();
       await expect(
-        page.locator("#projects").getByRole("heading", { name: "OpenAI LLM Gateway" })
+        page.locator("#projects").getByText("OpenAI LLM Gateway")
       ).toBeVisible();
 
       // Experience, Skills, About, Contact sections
@@ -58,7 +58,7 @@ test.describe("Home page smoke", () => {
 
       // Dock nav
       await expect(page.getByLabel("home")).toBeVisible();
-      await expect(page.getByLabel("projects")).toBeVisible();
+      await expect(page.getByRole("link", { name: "projects" })).toBeVisible();
       await expect(page.getByLabel("theme")).toBeVisible();
 
       // Chat widget toggle
