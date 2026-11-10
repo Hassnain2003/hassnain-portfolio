@@ -1,7 +1,8 @@
  "use client";
 
-import { useRef, useState, useEffect } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { useRef, useState } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Html, Text } from "@react-three/drei";
 import { SphereGeometry, BoxGeometry, BufferGeometry, Float32BufferAttribute, Line, LineBasicMaterial, PointsMaterial, Vector3 } from "three";
 import * as THREE from "three";
 import { facts } from "@/data/facts";
@@ -50,6 +51,51 @@ const SIZE_RADIUS: Record<string, number> = { small: 0.25, medium: 0.35, large: 
 
 const DEFAULT_SELECTED = "AgentDine";
 
+// Label that lives inside Canvas using drei's Html for screen-projected positioning
+function NodeLabel({ name, x, y, z }: { name: string; x: number; y: number; z: number }) {
+  const { size } = useThree();
+  const meta = PROJECT_META[name];
+  const style = CATEGORY_STYLE[meta.category];
+  const isPlanned = meta.status === "planned";
+
+  let labelClass = "px-1.5 py-0.5 rounded text-[9px] font-mono font-bold uppercase tracking-tighter";
+  if (isPlanned) {
+    labelClass += " text-muted/60 border border-muted/40 bg-muted/10";
+  } else if (style.color === "#bc13fe") {
+    labelClass += " text-accent-2 border-accent-2/30 bg-accent-2/10";
+  } else if (style.color === "#00f2ff") {
+    labelClass += " text-accent border-accent/30 bg-accent/10";
+  } else {
+    labelClass += " text-success border-success/30 bg-success/10";
+  }
+
+  return (
+    <Html
+      prepend
+      center
+      style={{
+        pointerEvents: "none",
+        userSelect: "none",
+        whiteSpace: "nowrap",
+        fontSize: isPlanned ? "10px" : "11px",
+        fontFamily: "'JetBrains Mono', monospace",
+        fontWeight: isPlanned ? 500 : 700,
+        color: isPlanned ? "#6b6b80" : style.color,
+        textShadow: isPlanned ? "none" : `0 0 8px ${style.color}`,
+        textTransform: "uppercase",
+        letterSpacing: "0.05em",
+        opacity: isPlanned ? 0.5 : 0.9,
+        transform: "translate(-50%, -100%)",
+      }}
+      position={[x, y + SIZE_RADIUS[meta.size] + 0.4, z]}
+    >
+      <div className={labelClass}>
+        {name}
+      </div>
+    </Html>
+  );
+}
+
 function ProjectNode({ name, x, y, z, onSelect }: { name: string; x: number; y: number; z: number; onSelect: (name: string) => void }) {
   const meshRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
@@ -79,15 +125,18 @@ function ProjectNode({ name, x, y, z, onSelect }: { name: string; x: number; y: 
   });
 
   return (
-    <mesh
-      ref={meshRef}
-      position={[x, y, z]}
-      geometry={geometry}
-      material={material}
-      onClick={() => onSelect(name)}
-      onPointerOver={() => setHovered(true)}
-      onPointerOut={() => setHovered(false)}
-    />
+    <>
+      <mesh
+        ref={meshRef}
+        position={[x, y, z]}
+        geometry={geometry}
+        material={material}
+        onClick={() => onSelect(name)}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+      />
+      <NodeLabel name={name} x={x} y={y} z={z} />
+    </>
   );
 }
 
@@ -196,30 +245,6 @@ export function ProjectGalaxy() {
   lineGeometry.setAttribute("position", new Float32BufferAttribute(linePositions, 3));
   const lineMaterial = new LineBasicMaterial({ color: 0x00f2ff, transparent: true, opacity: 0.15 });
 
-  // Screen-projected label positions
-  const canvasRef = useRef<HTMLDivElement>(null);
-  const [labelPositions, setLabelPositions] = useState<Record<string, { x: number; y: number }>>({});
-
-  useFrame((state) => {
-    if (!canvasRef.current || !state.camera) return;
-    const camera = state.camera;
-    const canvasEl = canvasRef.current;
-    const width = canvasEl.clientWidth;
-    const height = canvasEl.clientHeight;
-
-    const newPositions: Record<string, { x: number; y: number }> = {};
-    facts.projects.forEach((p) => {
-      const pos = PROJECT_POSITIONS[p.name];
-      if (!pos) return;
-      const worldPos = new Vector3(pos.x, pos.y + SIZE_RADIUS[PROJECT_META[p.name].size] + 0.4, pos.z);
-      const screenPos = worldPos.clone().project(camera);
-      const x = (screenPos.x * 0.5 + 0.5) * width;
-      const y = (-(screenPos.y * 0.5) + 0.5) * height;
-      newPositions[p.name] = { x, y };
-    });
-    setLabelPositions(newPositions);
-  });
-
   return (
     <section id="projects" className="section relative overflow-hidden">
       <div className="absolute inset-0 -z-10">
@@ -237,72 +262,30 @@ export function ProjectGalaxy() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Graph container with padding to prevent clipping */}
           <div className="h-[600px] md:h-[700px] rounded-2xl border border-border/50 bg-black/30 backdrop-blur-sm relative overflow-hidden">
-            <div className="absolute inset-0" ref={canvasRef}>
-              <Canvas camera={{ position: [0, 0, 12], fov: 45 }} shadows>
-                <ambientLight intensity={0.4} />
-                <pointLight position={[10, 10, 10]} intensity={0.8} color="#00f2ff" />
-                <pointLight position={[-10, -10, 10]} intensity={0.6} color="#bc13fe" />
+            <Canvas camera={{ position: [0, 0, 12], fov: 45 }} shadows>
+              <ambientLight intensity={0.4} />
+              <pointLight position={[10, 10, 10]} intensity={0.8} color="#00f2ff" />
+              <pointLight position={[-10, -10, 10]} intensity={0.6} color="#bc13fe" />
 
-                <primitive object={new Line(lineGeometry, lineMaterial)} />
+              <primitive object={new Line(lineGeometry, lineMaterial)} />
 
-                {facts.projects.map((p, i) => {
-                  const pos = positions[i];
-                  return (
-                    <ProjectNode
-                      key={p.name}
-                      name={p.name}
-                      x={pos.x}
-                      y={pos.y}
-                      z={pos.z}
-                      onSelect={setSelected}
-                    />
-                  );
-                })}
-
-                <HolographicCube color={0x00f2ff} />
-                <ParticleField />
-              </Canvas>
-            </div>
-
-            {/* Screen-projected node labels */}
-            <div className="absolute inset-0 pointer-events-none">
-              {facts.projects.map((p) => {
-                const pos = labelPositions[p.name];
-                const meta = PROJECT_META[p.name];
-                const style = CATEGORY_STYLE[meta.category];
-                const isPlanned = meta.status === "planned";
-                if (!pos) return null;
-
-                // Compute label className
-                let labelClass = "px-1.5 py-0.5 rounded text-[9px] font-mono font-bold uppercase tracking-tighter";
-                if (isPlanned) {
-                  labelClass += " text-muted/60 border border-muted/40 bg-muted/10";
-                } else if (style.color === "#bc13fe") {
-                  labelClass += " text-accent-2 border-accent-2/30 bg-accent-2/10";
-                } else if (style.color === "#00f2ff") {
-                  labelClass += " text-accent border-accent/30 bg-accent/10";
-                } else {
-                  labelClass += " text-success border-success/30 bg-success/10";
-                }
-
+              {facts.projects.map((p, i) => {
+                const pos = positions[i];
                 return (
-                  <div
+                  <ProjectNode
                     key={p.name}
-                    className="absolute flex flex-col items-center gap-1 transition-opacity duration-200"
-                    style={{
-                      left: `${pos.x}px`,
-                      top: `${pos.y}px`,
-                      transform: "translate(-50%, -100%)",
-                      opacity: isPlanned ? 0.5 : 0.9,
-                    }}
-                  >
-                    <span className={labelClass}>
-                      {p.name}
-                    </span>
-                  </div>
+                    name={p.name}
+                    x={pos.x}
+                    y={pos.y}
+                    z={pos.z}
+                    onSelect={setSelected}
+                  />
                 );
               })}
-            </div>
+
+              <HolographicCube color={0x00f2ff} />
+              <ParticleField />
+            </Canvas>
           </div>
 
           {/* Selected project detail panel */}
