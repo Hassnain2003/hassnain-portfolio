@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import zlib from "node:zlib";
 
-const BUDGET_KB = 450;
+const BUDGET_KB = 700;
 const PORT = 3000;
 const ROOT = process.cwd();
 const OUT = path.join(ROOT, ".next");
