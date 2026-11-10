@@ -3,7 +3,6 @@ import Script from "next/script";
 import "./globals.css";
 import { facts } from "@/data/facts";
 import { defaultTheme, site, themeStorageKey } from "@/data/site";
-import { Nav } from "@/components/nav";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -68,9 +67,7 @@ export default function RootLayout({
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <header>
-          <Nav />
-        </header>
+        <header className="sticky top-0 z-40"></header>
         <main id="main" className="flex-1">
           {children}
         </main>
