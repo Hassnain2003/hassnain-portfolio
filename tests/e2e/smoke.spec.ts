@@ -16,50 +16,43 @@ test.describe("Home page smoke", () => {
       await expect(page.locator("h1")).toContainText("Hassnain Abbas");
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
       await expect(
-        page.getByText("AI & Backend Engineer building LLM agents")
+        page.locator("#hero").getByText("I build LLM agents and the infrastructure they run on.")
       ).toBeVisible();
 
       // Contact buttons scoped to hero section
       await expect(
+        page.locator("#hero").getByRole("link", { name: "View Work" })
+      ).toBeVisible();
+      await expect(
         page.locator("#hero").getByRole("link", { name: "Resume" })
       ).toBeVisible();
-      await expect(
-        page.locator("#hero").getByRole("link", { name: "GitHub" })
-      ).toBeVisible();
-      await expect(
-        page.locator("#hero").getByRole("link", { name: "LinkedIn" })
-      ).toBeVisible();
-      await expect(
-        page.locator("#hero").getByRole("link", { name: "Email" })
-      ).toBeVisible();
 
-      // Telemetry line
-      await expect(page.getByText(/This site: Lighthouse/)).toBeVisible();
+      // Telemetry line removed in new design
 
-      // System map
-      await expect(page.getByText("System map")).toBeVisible();
+      // Project Galaxy section
+      await expect(page.getByText("Project Galaxy")).toBeVisible();
 
       // Project cards scoped to projects section
       await expect(
-        page.locator("#projects").getByText("AgentDine")
+        page.locator("#projects").getByText("AgentDine").first()
       ).toBeVisible();
       await expect(
-        page.locator("#projects").getByText("kube-triage")
+        page.locator("#projects").getByText("kube-triage").first()
       ).toBeVisible();
       await expect(
-        page.locator("#projects").getByText("OpenAI LLM Gateway")
+        page.locator("#projects").getByText("OpenAI LLM Gateway").first()
       ).toBeVisible();
 
       // Experience, Skills, About, Contact sections
       await expect(page.getByRole("heading", { name: "Experience" })).toBeVisible();
-      await expect(page.getByRole("heading", { name: "Skills" })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Technical Stack" })).toBeVisible();
       await expect(page.getByRole("heading", { name: "About" })).toBeVisible();
       await expect(page.getByRole("heading", { name: "Contact" })).toBeVisible();
 
       // Dock nav
-      await expect(page.getByLabel("home")).toBeVisible();
-      await expect(page.getByRole("link", { name: "projects" })).toBeVisible();
-      await expect(page.getByLabel("theme")).toBeVisible();
+      await expect(page.getByRole("link", { name: "Home" })).toBeVisible();
+      await expect(page.getByRole("link", { name: "Projects" })).toBeVisible();
+      await expect(page.getByLabel("Open menu")).toBeVisible();
 
       // Chat widget toggle
       await expect(page.getByLabel("Open chat assistant")).toBeVisible();
@@ -132,13 +125,13 @@ test.describe("Keyboard navigation smoke", () => {
       await page.goto(`${BASE}/${SKIP_BOOT}`, { timeout: 15000, waitUntil: "domcontentloaded" });
       await page.waitForLoadState("networkidle");
 
-      // Tab through focusable elements: skip link, then dock items
+      // Tab through focusable elements: skip link, then nav items
       await page.keyboard.press("Tab");
       await page.keyboard.press("Tab");
 
-      // Focus should be on a dock item (skip link = Tab 1, home dock item = Tab 2)
+      // Focus should be on a nav item (skip link = Tab 1, home nav item = Tab 2)
       const focused = page.locator(":focus");
-      await expect(focused).toHaveAttribute("aria-label", "home");
+      await expect(focused).toHaveAttribute("href", "/");
     } finally {
       await page.close();
       await browser.close();

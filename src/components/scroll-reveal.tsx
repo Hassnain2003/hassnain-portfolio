@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 export function ScrollReveal({ children, delay = 0, once = true }: { children: React.ReactNode; delay?: number; once?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

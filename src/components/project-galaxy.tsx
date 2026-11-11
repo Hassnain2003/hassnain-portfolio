@@ -423,3 +423,5 @@ export function ProjectGalaxy() {
     </section>
   );
 }
+
+export default ProjectGalaxy;

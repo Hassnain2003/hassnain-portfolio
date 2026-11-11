@@ -11,18 +11,15 @@ test("home renders static HTML with name, role, and contact buttons", async () =
     await expect(page.locator("h1")).toContainText("Hassnain Abbas");
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await expect(
-      page.getByText("AI & Backend Engineer building LLM agents")
+      page.locator("#hero").getByText("I build LLM agents and the infrastructure they run on.")
     ).toBeVisible();
     // Contact buttons scoped to hero section
     await expect(
-      page.locator("#hero").getByRole("link", { name: "GitHub" })
-    ).toHaveAttribute("href", "https://github.com/Hassnain2003");
+      page.locator("#hero").getByRole("link", { name: "View Work" })
+    ).toBeVisible();
     await expect(
-      page.locator("#hero").getByRole("link", { name: "LinkedIn" })
-    ).toHaveAttribute("href", "https://linkedin.com/in/hassnainzaidi");
-    await expect(
-      page.locator("#hero").getByRole("link", { name: "Email" })
-    ).toHaveAttribute("href", "mailto:abbashussnain818@gmail.com");
+      page.locator("#hero").getByRole("link", { name: "Resume" })
+    ).toBeVisible();
   } finally {
     await page.close();
     await browser.close();
