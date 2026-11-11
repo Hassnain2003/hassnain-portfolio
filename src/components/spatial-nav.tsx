@@ -85,10 +85,6 @@ export function SpatialNav() {
               <Mail size={16} />
             </a>
             <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#050505] border border-accent/30">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(0,242,255,0.6)] animate-pulse" />
-                <span className="text-[10px] font-mono text-accent/80 uppercase tracking-wider">Available Jan 2027</span>
-              </div>
               <a
                 href={CAL_LINK}
                 target="_blank"
@@ -152,21 +148,15 @@ export function SpatialNav() {
                 </Link>
               );
             })}
-            <div className="mt-4 pt-4 border-t border-border/50 flex flex-col gap-3">
-              <div className="flex items-center gap-2 px-4 py-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(0,242,255,0.6)] animate-pulse" />
-                <span className="text-[10px] font-mono text-accent/80 uppercase tracking-wider">Available Jan 2027</span>
-              </div>
-              <a
-                href={CAL_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-accent/10 border border-accent/30 text-accent font-medium text-xs hover:bg-accent/20 transition-all no-underline text-decoration-none"
-                aria-label="Book a Call"
-              >
-                Book Call <ArrowRight size={12} strokeWidth={2} />
-              </a>
-            </div>
+            <a
+              href={CAL_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-accent/10 border border-accent/30 text-accent font-medium text-xs hover:bg-accent/20 transition-all no-underline text-decoration-none"
+              aria-label="Book a Call"
+            >
+              Book Call <ArrowRight size={12} strokeWidth={2} />
+            </a>
           </nav>
         </div>
       )}
