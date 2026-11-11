@@ -27,11 +27,7 @@ export function ScrollReveal({ children, delay = 0, once = true }: { children: R
   return (
     <div ref={ref} className="reveal-wrapper">
       <div
-        className={`reveal-content transition-all duration-[400ms] ease-out ${
-          visible
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-[1rem]"
-        }`}
+        className={`reveal-content transition-all duration-[400ms] ease-out ${visible ? "visible" : ""}`}
         style={{
           transitionDelay: `${delay}ms`,
         }}
