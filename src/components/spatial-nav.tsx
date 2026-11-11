@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, Home, Code, Monitor, Mail, GraduationCap, LayoutGrid, Github, Linkedin, Calendar } from "lucide-react";
+import { Menu, Home, Code, Monitor, Mail, GraduationCap, LayoutGrid, Github, Linkedin, ArrowRight } from "lucide-react";
 import { facts } from "@/data/facts";
 
 const NAV_ITEMS = [
@@ -13,6 +13,8 @@ const NAV_ITEMS = [
   { label: "About", href: "#about", icon: GraduationCap },
   { label: "Contact", href: "#contact", icon: Mail },
 ];
+
+const CAL_LINK = "https://cal.com/mohammad-hassnain-abbas-jckt0j/30min";
 
 export function SpatialNav() {
   const [active, setActive] = useState<string>("/");
@@ -82,13 +84,21 @@ export function SpatialNav() {
             >
               <Mail size={16} />
             </a>
-            <a
-              href="#meetings"
-              className="p-2 rounded-lg border border-accent/30 bg-accent/10 text-accent hover:bg-accent/20 hover:border-accent/50 transition-all"
-              aria-label="Book a Call"
-            >
-              <Calendar size={16} />
-            </a>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#050505] border border-accent/30">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(0,242,255,0.6)] animate-pulse" />
+                <span className="text-[10px] font-mono text-accent/80 uppercase tracking-wider">Available Jan 2027</span>
+              </div>
+              <a
+                href={CAL_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-accent via-accent-2 to-[rgba(188,19,254,0.6)] text-accent-foreground font-medium text-xs hover:shadow-[0_0_20px_rgba(0,242,255,0.4)] hover:scale-[1.02] transition-all no-underline text-decoration-none"
+                aria-label="Book a Call"
+              >
+                Book Call <ArrowRight size={10} strokeWidth={2} />
+              </a>
+            </div>
           </div>
           <button
             onClick={() => setOpen(!open)}
@@ -142,6 +152,21 @@ export function SpatialNav() {
                 </Link>
               );
             })}
+            <div className="mt-4 pt-4 border-t border-border/50 flex flex-col gap-3">
+              <div className="flex items-center gap-2 px-4 py-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(0,242,255,0.6)] animate-pulse" />
+                <span className="text-[10px] font-mono text-accent/80 uppercase tracking-wider">Available Jan 2027</span>
+              </div>
+              <a
+                href={CAL_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-accent/10 border border-accent/30 text-accent font-medium text-xs hover:bg-accent/20 transition-all no-underline text-decoration-none"
+                aria-label="Book a Call"
+              >
+                Book Call <ArrowRight size={12} strokeWidth={2} />
+              </a>
+            </div>
           </nav>
         </div>
       )}
