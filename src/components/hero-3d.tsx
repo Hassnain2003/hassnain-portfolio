@@ -137,16 +137,16 @@ function ConnectionLines({ centerX, centerY, centerZ }: { centerX: number; cente
 
 export function Hero3D() {
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
-  const contactBtn = (href: string, label: string, variant: "primary" | "secondary" = "primary") => (
-    <a
-      href={href}
-      className={`btn ${variant === "primary" ? "btn-primary" : "btn-outline"}`}
-      target={href.startsWith("mailto") ? undefined : "_blank"}
-      rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
-    >
-      {label}
-    </a>
-  );
+const contactBtn = (href: string, label: string, variant: "primary" | "secondary" = "primary") => (
+  <a
+    href={href}
+    className={`btn ${variant === "primary" ? "btn-primary" : "btn-outline"}`}
+    target={href.startsWith("mailto") || href.startsWith("#") ? undefined : "_blank"}
+    rel={href.startsWith("mailto") || href.startsWith("#") ? undefined : "noopener noreferrer"}
+  >
+    {label}
+  </a>
+);
 
   return (
     <section id="hero" className="section pt-32 pb-40 border-b-0 relative overflow-hidden">

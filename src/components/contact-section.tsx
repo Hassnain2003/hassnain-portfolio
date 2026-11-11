@@ -26,7 +26,6 @@ export function ContactSection() {
 
       <div className="section-header mb-10">
         <h2 className="text-heading text-foreground mb-2">Contact</h2>
-        <p className="text-subhead text-muted/90">Open to opportunities starting January 2027.</p>
       </div>
 
       <div className="glass p-8 md:p-12 rounded-2xl max-w-2xl mx-auto text-center">

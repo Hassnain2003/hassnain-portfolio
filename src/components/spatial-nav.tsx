@@ -2,18 +2,16 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, Home, Code, Layers, Monitor, Mail, GraduationCap, LayoutGrid, Github, Linkedin } from "lucide-react";
+import { Menu, Home, Code, Monitor, Mail, GraduationCap, LayoutGrid, Github, Linkedin } from "lucide-react";
 import { facts } from "@/data/facts";
 
 const NAV_ITEMS = [
   { label: "Home", href: "/", icon: Home },
   { label: "Projects", href: "#projects", icon: Code },
-  { label: "System", href: "#system-map", icon: Layers },
   { label: "Experience", href: "#experience", icon: Monitor },
   { label: "Skills", href: "#skills", icon: LayoutGrid },
   { label: "About", href: "#about", icon: GraduationCap },
   { label: "Contact", href: "#contact", icon: Mail },
-  { label: "Resume", href: "/resume", icon: GraduationCap },
 ];
 
 export function SpatialNav() {
