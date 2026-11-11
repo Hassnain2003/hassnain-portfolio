@@ -7,6 +7,7 @@ import { SpatialNav } from "@/components/spatial-nav";
 import { Hero3D } from "@/components/hero-3d";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { ExperienceSection } from "@/components/experience-section";
+import { MeetingSection } from "@/components/meeting-section";
 import { SkillsSection } from "@/components/skills-section";
 import { AboutSection } from "@/components/about-section";
 import { ContactSection } from "@/components/contact-section";
@@ -50,6 +51,10 @@ export default function Home() {
         </ScrollReveal>
 
         <ScrollReveal delay={500}>
+          <MeetingSection />
+        </ScrollReveal>
+
+        <ScrollReveal delay={600}>
           <AboutSection />
         </ScrollReveal>
 

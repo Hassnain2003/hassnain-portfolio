@@ -83,7 +83,7 @@ export function SpatialNav() {
               <Mail size={16} />
             </a>
             <a
-              href="#contact"
+              href="#meetings"
               className="p-2 rounded-lg border border-accent/30 bg-accent/10 text-accent hover:bg-accent/20 hover:border-accent/50 transition-all"
               aria-label="Book a Call"
             >
