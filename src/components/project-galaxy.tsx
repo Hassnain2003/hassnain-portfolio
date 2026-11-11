@@ -2,7 +2,6 @@
 
 import { useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Html } from "@react-three/drei";
 import { SphereGeometry, BoxGeometry, BufferGeometry, Float32BufferAttribute, Line, LineBasicMaterial, PointsMaterial } from "three";
 import * as THREE from "three";
 import { facts } from "@/data/facts";
@@ -51,36 +50,25 @@ const SIZE_RADIUS: Record<string, number> = { small: 0.25, medium: 0.35, large: 
 
 const DEFAULT_SELECTED = "AgentDine";
 
-// Label that tracks its 3D node via drei's Html (must be inside Canvas)
-function NodeLabel({ name, x, y, z }: { name: string; x: number; y: number; z: number }) {
-  const meta = PROJECT_META[name];
-  const style = CATEGORY_STYLE[meta.category];
-  const isPlanned = meta.status === "planned";
-
-  let labelClass = "px-1.5 py-0.5 rounded text-[9px] font-mono font-bold uppercase tracking-tighter";
-  if (isPlanned) {
-    labelClass += " text-muted/60 border border-muted/40 bg-muted/10";
-  } else if (style.color === "#bc13fe") {
-    labelClass += " text-accent-2 border-accent-2/30 bg-accent-2/10";
-  } else if (style.color === "#00f2ff") {
-    labelClass += " text-accent border-accent/30 bg-accent/10";
-  } else {
-    labelClass += " text-success border-success/30 bg-success/10";
-  }
-
-  return (
-    <Html
-      sprite
-      position={[x, y + SIZE_RADIUS[meta.size] + 0.4, z]}
-      style={{
-        pointerEvents: "none",
-        userSelect: "none",
-        whiteSpace: "nowrap",
-      }}
-    >
-      <span className={labelClass}>{name}</span>
-    </Html>
-  );
+// Label positioning - runs inside Canvas, reports screen positions to outside component
+function LabelTracker({ onPositions }: { onPositions: (p: Record<string, { x: number; y: number; visible: boolean }>) => void }) {
+  useFrame((state) => {
+    const { camera, size } = state;
+    const result: Record<string, { x: number; y: number; visible: boolean }> = {};
+    for (const proj of facts.projects) {
+      const pos = PROJECT_POSITIONS[proj.name];
+      if (!pos) continue;
+      const wp = new THREE.Vector3(pos.x, pos.y + SIZE_RADIUS[PROJECT_META[proj.name].size] + 0.5, pos.z);
+      const sp = wp.clone().project(camera);
+      result[proj.name] = {
+        x: (sp.x * 0.5 + 0.5) * size.width,
+        y: (-(sp.y * 0.5) + 0.5) * size.height,
+        visible: sp.z > -1 && sp.z < 1,
+      };
+    }
+    onPositions(result);
+  });
+  return null;
 }
 
 function ProjectNode({ name, x, y, z, onSelect }: { name: string; x: number; y: number; z: number; onSelect: (name: string) => void }) {
@@ -112,24 +100,21 @@ function ProjectNode({ name, x, y, z, onSelect }: { name: string; x: number; y: 
   });
 
   return (
-    <>
-      <mesh
-        ref={meshRef}
-        position={[x, y, z]}
-        geometry={geometry}
-        material={material}
-        onClick={() => onSelect(name)}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
-      />
-      <NodeLabel name={name} x={x} y={y} z={z} />
-    </>
+    <mesh
+      ref={meshRef}
+      position={[x, y, z]}
+      geometry={geometry}
+      material={material}
+      onClick={() => onSelect(name)}
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
+    />
   );
 }
 
 function ParticleField() {
   const pointsRef = useRef<THREE.Points>(null);
-  const count = 3000;
+  const count = 1200;
   const positions = new Float32Array(count * 3);
   const velocities = new Float32Array(count);
   for (let i = 0; i < count * 3; i += 3) {
@@ -215,6 +200,7 @@ function HolographicCube({ color = 0x00f2ff }: { color?: number }) {
 
 export function ProjectGalaxy() {
   const [selected, setSelected] = useState<string | null>(DEFAULT_SELECTED);
+  const [labelPositions, setLabelPositions] = useState<Record<string, { x: number; y: number; visible: boolean }>>({});
   const project = selected ? facts.projects.find((p) => p.name === selected) : null;
   const branches = project ? PROJECT_TAGS[project.name] ?? [] : [];
 
@@ -249,7 +235,7 @@ export function ProjectGalaxy() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Graph container with padding to prevent clipping */}
           <div className="h-[600px] md:h-[700px] rounded-2xl border border-border/50 bg-black/30 backdrop-blur-sm relative overflow-hidden">
-            <Canvas camera={{ position: [0, 0, 12], fov: 45 }} shadows>
+            <Canvas camera={{ position: [0, 0, 12], fov: 45 }} shadows dpr={[1, 1.5]} gl={{ antialias: true, powerPreference: "high-performance" }}>
               <ambientLight intensity={0.4} />
               <pointLight position={[10, 10, 10]} intensity={0.8} color="#00f2ff" />
               <pointLight position={[-10, -10, 10]} intensity={0.6} color="#bc13fe" />
@@ -272,7 +258,29 @@ export function ProjectGalaxy() {
 
               <HolographicCube color={0x00f2ff} />
               <ParticleField />
+              <LabelTracker onPositions={setLabelPositions} />
             </Canvas>
+
+            {/* DOM labels positioned by LabelTracker */}
+            <div className="absolute inset-0 pointer-events-none">
+              {facts.projects.map((proj) => {
+                const pos = labelPositions[proj.name];
+                const meta = PROJECT_META[proj.name];
+                const st = CATEGORY_STYLE[meta.category];
+                const planned = meta.status === "planned";
+                if (!pos || !pos.visible) return null;
+                let cls = "px-1.5 py-0.5 rounded text-[9px] font-mono font-bold uppercase tracking-tighter";
+                if (planned) cls += " text-muted/60 border border-muted/40 bg-muted/10";
+                else if (st.color === "#bc13fe") cls += " text-accent-2 border-accent-2/30 bg-accent-2/10";
+                else if (st.color === "#00f2ff") cls += " text-accent border-accent/30 bg-accent/10";
+                else cls += " text-success border-success/30 bg-success/10";
+                return (
+                  <span key={proj.name} className={"absolute whitespace-nowrap " + cls} style={{ left: pos.x, top: pos.y, transform: "translate(-50%, -100%)" }}>
+                    {proj.name}
+                  </span>
+                );
+              })}
+            </div>
           </div>
 
           {/* Selected project detail panel */}

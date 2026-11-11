@@ -81,7 +81,7 @@ function DataNode({ name, x, y, z, color, onPointerOver, onPointerOut }: { name:
 
 function ParticleField() {
   const pointsRef = useRef<THREE.Points>(null);
-  const count = 3000;
+  const count = 1200;
   const positions = new Float32Array(count * 3);
   const velocities = new Float32Array(count);
   for (let i = 0; i < count * 3; i += 3) {
@@ -179,7 +179,7 @@ export function Hero3D() {
         </h1>
 
         <div className="relative w-full max-w-[500px] h-[500px] md:h-[600px] flex items-center justify-center hero-canvas">
-          <Canvas camera={{ position: [0, 0, 10], fov: 45 }} shadows>
+          <Canvas camera={{ position: [0, 0, 10], fov: 45 }} dpr={[1, 1.5]} gl={{ antialias: true, powerPreference: "high-performance" }} shadows>
             <ambientLight intensity={0.3} />
             <pointLight position={[10, 10, 10]} intensity={0.8} color="#00f2ff" />
             <pointLight position={[-10, -10, 10]} intensity={0.6} color="#bc13fe" />
