@@ -1,6 +1,7 @@
 "use client";
 
 import { facts } from "@/data/facts";
+import Cal from "@calcom/embed-react";
 
 const contactBtn = (href: string, label: string) => (
   <a
@@ -12,6 +13,8 @@ const contactBtn = (href: string, label: string) => (
     {label}
   </a>
 );
+
+const CAL_LINK = "https://cal.com/mohammad-hassnain-abbas-jckt0j/30min";
 
 export function ContactSection() {
   const resumeHref = facts.links.resume || "#resume";
@@ -35,6 +38,15 @@ export function ContactSection() {
           {contactBtn(facts.links.linkedin, "LinkedIn")}
           {contactBtn(`mailto:${facts.links.email}`, "Email")}
         </div>
+
+        <div className="w-full max-w-md mx-auto mb-6">
+          <Cal
+            calLink={CAL_LINK}
+            config={{ "ui.color-scheme": "dark", theme: "dark" }}
+            className="w-full"
+          />
+        </div>
+
         <p className="text-sm text-muted/90 font-mono mb-6">
           {facts.name} · {facts.location}
         </p>

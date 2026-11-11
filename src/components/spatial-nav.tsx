@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, Home, Code, Monitor, Mail, GraduationCap, LayoutGrid, Github, Linkedin } from "lucide-react";
+import { Menu, Home, Code, Monitor, Mail, GraduationCap, LayoutGrid, Github, Linkedin, Calendar } from "lucide-react";
 import { facts } from "@/data/facts";
 
 const NAV_ITEMS = [
@@ -81,6 +81,13 @@ export function SpatialNav() {
               aria-label="Email"
             >
               <Mail size={16} />
+            </a>
+            <a
+              href="#contact"
+              className="p-2 rounded-lg border border-accent/30 bg-accent/10 text-accent hover:bg-accent/20 hover:border-accent/50 transition-all"
+              aria-label="Book a Call"
+            >
+              <Calendar size={16} />
             </a>
           </div>
           <button
