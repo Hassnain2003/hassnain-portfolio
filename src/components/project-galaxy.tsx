@@ -285,7 +285,7 @@ export function ProjectGalaxy() {
 
           {/* Selected project detail panel */}
           {selected && project && (
-            <div className="lg:block glass p-6 rounded-xl border border-accent/50 shadow-[0_0_40px_rgba(0,242,255,0.2)] overflow-y-auto max-h-[calc(100vh-8rem)]">
+            <div className="hidden lg:block glass p-6 rounded-xl border border-accent/50 shadow-[0_0_40px_rgba(0,242,255,0.2)] overflow-y-auto max-h-[calc(100vh-8rem)]">
               <button
                 onClick={() => setSelected(null)}
                 className="absolute top-2 right-2 h-8 w-8 rounded border border-solid border-current/30 flex items-center justify-center text-xs text-foreground hover:bg-accent/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"

@@ -61,6 +61,12 @@ export function ChatWidget() {
     if (!open && error) setError(false);
   }, [open, error]);
 
+  const closeChat = useCallback(() => {
+    setOpen(false);
+    setMessages([]);
+    setError(false);
+  }, []);
+
   const sendMessage = useCallback(async () => {
     const text = input.trim();
     if (!text || loading) return;
@@ -138,13 +144,11 @@ export function ChatWidget() {
       <button
         id="chat-toggle"
         onClick={toggleChat}
-        className="fixed bottom-8 right-8 z-50 flex flex-col items-center justify-center gap-1 h-auto w-auto rounded-full border border-solid border-accent/50 bg-background/90 backdrop-blur px-4 py-2 text-xs font-mono text-accent transition-all hover:bg-accent/20 hover:text-accent hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        className="fixed bottom-[calc(2rem+env(safe-area-inset-bottom))] right-[calc(1rem+env(safe-area-inset-right))] z-50 flex flex-col items-center justify-center gap-1 h-10 w-10 rounded-full border border-solid border-accent/50 bg-background/90 backdrop-blur px-3 text-xs font-mono text-accent transition-all hover:bg-accent/20 hover:text-accent hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
         aria-label="Open chat assistant"
         title="Chat with AI Assistant"
       >
-        <span className="text-[10px] font-mono font-bold uppercase tracking-wider">chat with ai</span>
-        <span className="text-[10px] font-mono font-bold uppercase tracking-wider">assistant</span>
-        <svg className="h-5 w-5 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="h-6 w-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -157,7 +161,7 @@ export function ChatWidget() {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 w-80 flex flex-col">
+    <div className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] right-[calc(1rem+env(safe-area-inset-right))] z-50 w-[280px] sm:w-[340px] flex flex-col">
       <div className="border border-solid border-border rounded-lg bg-background/95 backdrop-blur shadow-xl flex flex-col overflow-hidden">
         <div className="flex items-center justify-between px-4 py-3 border-b border-solid border-border/50 bg-panel/50">
           <h3 className="font-mono font-semibold text-foreground">Ask my agent</h3>
