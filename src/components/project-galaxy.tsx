@@ -96,7 +96,7 @@ function ProjectNode({ name, x, y, z, onSelect }: { name: string; x: number; y: 
         position={[x, y + radius + 0.35, z]}
         style={{
           pointerEvents: "none",
-          color: style.color,
+          color: "#fff",
           fontSize: 10,
           fontWeight: 700,
           fontFamily: "monospace",
