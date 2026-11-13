@@ -93,21 +93,25 @@ function ProjectNode({ name, x, y, z, onSelect }: { name: string; x: number; y: 
         onPointerOut={() => setHovered(false)}
       />
       <Html
-        position={[x, y + radius + 0.35, z]}
+        position={[x, y + radius + 0.5, z]}
         style={{
           pointerEvents: "none",
           color: "#fff",
           fontSize: 10,
-          fontWeight: 700,
+          fontWeight: 800,
           fontFamily: "monospace",
           textTransform: "uppercase",
           letterSpacing: "0.05em",
           textAlign: "center",
-          textShadow: "0 0 8px rgba(0,0,0,0.8)",
+          textShadow: "0 0 10px rgba(0,0,0,1)",
           whiteSpace: "nowrap",
-          opacity: hovered ? 1 : 0.75,
-          transition: "opacity 0.2s",
-          WebkitTextStroke: "2px rgba(0,0,0,0.9)",
+          opacity: 1,
+          background: "rgba(5,5,5,0.85)",
+          padding: "2px 6px",
+          borderRadius: "4px",
+          border: "1px solid rgba(0,242,255,0.35)",
+          backdropFilter: "blur(4px)",
+          WebkitTextStroke: "none",
         }}
       >
         {name}
