@@ -11,7 +11,7 @@ import { SkillsSection } from "@/components/skills-section";
 import { AboutSection } from "@/components/about-section";
 import { ContactSection } from "@/components/contact-section";
 
-const ProjectGalaxyDynamic = dynamic(() => import("@/components/project-galaxy"), {
+const ProjectGalaxyDynamic = dynamic(() => import("@/components/project-galaxy").then((mod) => ({ default: mod.ProjectGalaxy })), {
   ssr: false,
   loading: () => (
     <div className="h-[600px] flex items-center justify-center text-muted/60 font-mono">

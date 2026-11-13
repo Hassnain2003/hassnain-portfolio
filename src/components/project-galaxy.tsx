@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import { useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
@@ -29,12 +29,12 @@ const PROJECT_META: Record<string, {
 };
 
 const PROJECT_POSITIONS: Record<string, { x: number; y: number; z: number }> = {
-  AgentDine: { x: -4, y: 2, z: -4 },
-  "kube-triage": { x: 4, y: 1, z: -4 },
-  "OpenAI LLM Gateway": { x: 0, y: 3, z: -6 },
-  "Algorithmic trading engine": { x: -5, y: -1, z: 0 },
-  "D&Z Cartique": { x: 3, y: -1, z: 2 },
-  QLSS: { x: -1, y: -3, z: 4 },
+  AgentDine: { x: -3, y: 2, z: -3 },
+  "kube-triage": { x: 3, y: 1, z: -3 },
+  "OpenAI LLM Gateway": { x: 0, y: 2.5, z: -4 },
+  "Algorithmic trading engine": { x: -3, y: -1, z: 0 },
+  "D&Z Cartique": { x: 3, y: -0.5, z: 1 },
+  QLSS: { x: 0, y: -2, z: 2 },
 };
 
 const PROJECT_TAGS: Record<string, string[]> = {
@@ -49,27 +49,6 @@ const PROJECT_TAGS: Record<string, string[]> = {
 const SIZE_RADIUS: Record<string, number> = { small: 0.25, medium: 0.35, large: 0.5 };
 
 const DEFAULT_SELECTED = "AgentDine";
-
-// Label positioning - runs inside Canvas, reports screen positions to outside component
-function LabelTracker({ onPositions }: { onPositions: (p: Record<string, { x: number; y: number; visible: boolean }>) => void }) {
-  useFrame((state) => {
-    const { camera, size } = state;
-    const result: Record<string, { x: number; y: number; visible: boolean }> = {};
-    for (const proj of facts.projects) {
-      const pos = PROJECT_POSITIONS[proj.name];
-      if (!pos) continue;
-      const wp = new THREE.Vector3(pos.x, pos.y + SIZE_RADIUS[PROJECT_META[proj.name].size] + 0.5, pos.z);
-      const sp = wp.clone().project(camera);
-      result[proj.name] = {
-        x: (sp.x * 0.5 + 0.5) * size.width,
-        y: (-(sp.y * 0.5) + 0.5) * size.height,
-        visible: sp.z > -1 && sp.z < 1,
-      };
-    }
-    onPositions(result);
-  });
-  return null;
-}
 
 function ProjectNode({ name, x, y, z, onSelect }: { name: string; x: number; y: number; z: number; onSelect: (name: string) => void }) {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -200,7 +179,6 @@ function HolographicCube({ color = 0x00f2ff }: { color?: number }) {
 
 export function ProjectGalaxy() {
   const [selected, setSelected] = useState<string | null>(DEFAULT_SELECTED);
-  const [labelPositions, setLabelPositions] = useState<Record<string, { x: number; y: number; visible: boolean }>>({});
   const project = selected ? facts.projects.find((p) => p.name === selected) : null;
   const branches = project ? PROJECT_TAGS[project.name] ?? [] : [];
 
@@ -221,9 +199,7 @@ export function ProjectGalaxy() {
   return (
     <section id="projects" className="section relative overflow-hidden">
       <div className="absolute inset-0 -z-10">
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[600px] bg-accent/5 rounded-full blur-[200px]"
-        />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[600px] bg-accent/5 rounded-full blur-[200px]" />
       </div>
 
       <div className="mx-auto max-w-6xl px-6">
@@ -233,15 +209,14 @@ export function ProjectGalaxy() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Graph container with padding to prevent clipping */}
-          <div className="h-[600px] md:h-[700px] rounded-2xl border border-border/50 bg-black/30 backdrop-blur-sm relative overflow-hidden">
+          {/* Graph container */}
+          <div className="h-[320px] md:h-[400px] lg:h-[700px] rounded-2xl border border-border/50 bg-black/30 backdrop-blur-sm relative overflow-hidden">
             <Canvas camera={{ position: [0, 0, 12], fov: 45 }} shadows dpr={[1, 1.5]} gl={{ antialias: true, powerPreference: "high-performance" }}>
               <ambientLight intensity={0.4} />
               <pointLight position={[10, 10, 10]} intensity={0.8} color="#00f2ff" />
               <pointLight position={[-10, -10, 10]} intensity={0.6} color="#bc13fe" />
 
               <primitive object={new Line(lineGeometry, lineMaterial)} />
-
               {facts.projects.map((p, i) => {
                 const pos = positions[i];
                 return (
@@ -255,35 +230,12 @@ export function ProjectGalaxy() {
                   />
                 );
               })}
-
               <HolographicCube color={0x00f2ff} />
               <ParticleField />
-              <LabelTracker onPositions={setLabelPositions} />
             </Canvas>
-
-            {/* DOM labels positioned by LabelTracker */}
-            <div className="absolute inset-0 pointer-events-none">
-              {facts.projects.map((proj) => {
-                const pos = labelPositions[proj.name];
-                const meta = PROJECT_META[proj.name];
-                const st = CATEGORY_STYLE[meta.category];
-                const planned = meta.status === "planned";
-                if (!pos || !pos.visible) return null;
-                let cls = "px-1.5 py-0.5 rounded text-[9px] font-mono font-bold uppercase tracking-tighter";
-                if (planned) cls += " text-muted/60 border border-muted/40 bg-muted/10";
-                else if (st.color === "#bc13fe") cls += " text-accent-2 border-accent-2/30 bg-accent-2/10";
-                else if (st.color === "#00f2ff") cls += " text-accent border-accent/30 bg-accent/10";
-                else cls += " text-success border-success/30 bg-success/10";
-                return (
-                  <span key={proj.name} className={"absolute whitespace-nowrap " + cls} style={{ left: pos.x, top: pos.y, transform: "translate(-50%, -100%)" }}>
-                    {proj.name}
-                  </span>
-                );
-              })}
-            </div>
           </div>
 
-          {/* Selected project detail panel */}
+          {/* Selected project detail panel - desktop only */}
           {selected && project && (
             <div className="hidden lg:block glass p-6 rounded-xl border border-accent/50 shadow-[0_0_40px_rgba(0,242,255,0.2)] overflow-y-auto max-h-[calc(100vh-8rem)]">
               <button
@@ -292,16 +244,11 @@ export function ProjectGalaxy() {
                 aria-label="Close details"
               >
                 <span className="sr-only">Close</span>
-                <span
-                  className="w-4 h-4"
-                  dangerouslySetInnerHTML={{ __html: '<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>' }}
-                />
+                <span className="w-4 h-4" dangerouslySetInnerHTML={{ __html: '<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>' }} />
               </button>
               <div className="flex items-center gap-2 mb-2">
                 <span className="w-2 h-2 rounded-full" style={{ backgroundColor: CATEGORY_STYLE[PROJECT_META[project.name]?.category ?? "infrastructure"].color }} />
-                <span className="text-xs font-mono font-bold text-accent uppercase tracking-tighter">
-                  {project.status === "planned" ? "planned" : project.status}
-                </span>
+                <span className="text-xs font-mono font-bold text-accent uppercase tracking-tighter">{project.status === "planned" ? "planned" : project.status}</span>
               </div>
               <h3 className="font-display font-bold text-lg text-foreground mb-2">{project.name}</h3>
               <p className="text-sm text-muted leading-relaxed mb-4">{project.description}</p>
@@ -309,8 +256,7 @@ export function ProjectGalaxy() {
               {branches.length > 0 && (
                 <div className="mb-4">
                   <h4 className="font-mono font-semibold text-xs text-accent uppercase tracking-tighter mb-2 flex items-center gap-1">
-                    <span className="w-1 h-3 bg-accent" />
-                    Project Branches
+                    <span className="w-1 h-3 bg-accent" />Project Branches
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {branches.map((tag) => (
@@ -324,104 +270,92 @@ export function ProjectGalaxy() {
 
               <div className="flex flex-wrap gap-3">
                 {project.repo ? (
-                  <Link
-                    href={project.repo}
-                    className="flex items-center gap-2 btn btn-outline btn-sm"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Open Code
-                  </Link>
+                  <Link href={project.repo} className="flex items-center gap-2 btn btn-outline btn-sm" target="_blank" rel="noopener noreferrer">Open Code</Link>
                 ) : (
-                  <span className="px-3 py-1.5 rounded border border-solid border-accent/30 text-xs font-inter text-accent/60">
-                    Code · private
-                  </span>
+                  <span className="px-3 py-1.5 rounded border border-solid border-accent/30 text-xs font-inter text-accent/60">Code · private</span>
                 )}
                 {project.live && (
-                  <Link
-                    href={project.live}
-                    className="flex items-center gap-2 btn btn-outline btn-sm"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Open Live
-                  </Link>
+                  <Link href={project.live} className="flex items-center gap-2 btn btn-outline btn-sm" target="_blank" rel="noopener noreferrer">Open Live</Link>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Project chips below canvas - always visible, tap to select */}
+          <div className="absolute bottom-0 left-0 right-0 p-3 flex flex-wrap gap-2 justify-center bg-gradient-to-t from-black/80 to-transparent pointer-events-auto">
+            {facts.projects.map((proj) => {
+              const meta = PROJECT_META[proj.name];
+              const st = CATEGORY_STYLE[meta.category];
+              const isSelected = selected === proj.name;
+              const isPlanned = meta.status === "planned";
+              const shadow = isSelected ? { boxShadow: `0 0 12px ${st.color}40` } : undefined;
+              return (
+                <button
+                  key={proj.name}
+                  onClick={() => setSelected(proj.name)}
+                  className={
+                    "px-2 py-1 rounded text-[9px] font-mono font-bold uppercase tracking-tighter border transition-all duration-200 " +
+                    (isSelected
+                      ? "text-accent border-accent bg-accent/20 shadow-[0_0_12px_rgba(0,242,255,0.3)]"
+                      : isPlanned
+                      ? "text-muted/60 border-muted/30 bg-muted/10 hover:text-muted hover:border-muted/50"
+                      : "text-muted/80 border-border/50 bg-black/40 hover:text-foreground hover:border-accent/50")
+                  }
+                  style={shadow}
+                >
+                  {proj.name}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Mobile detail panel */}
+          {selected && project && (
+            <div className="block lg:hidden glass p-6 rounded-xl border border-accent/50 shadow-[0_0_40px_rgba(0,242,255,0.2)] overflow-y-auto max-h-[calc(100vh-8rem)] mt-4">
+              <button
+                onClick={() => setSelected(null)}
+                className="absolute top-2 right-2 h-8 w-8 rounded border border-solid border-current/30 flex items-center justify-center text-xs text-foreground hover:bg-accent/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                aria-label="Close details"
+              >
+                <span className="sr-only">Close</span>
+                <span className="w-4 h-4" dangerouslySetInnerHTML={{ __html: '<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>' }} />
+              </button>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: CATEGORY_STYLE[PROJECT_META[project.name]?.category ?? "infrastructure"].color }} />
+                <span className="text-xs font-mono font-bold text-accent uppercase tracking-tighter">{project.status === "planned" ? "planned" : project.status}</span>
+              </div>
+              <h3 className="font-display font-bold text-lg text-foreground mb-2">{project.name}</h3>
+              <p className="text-sm text-muted leading-relaxed mb-4">{project.description}</p>
+
+              {branches.length > 0 && (
+                <div className="mb-4">
+                  <h4 className="font-mono font-semibold text-xs text-accent uppercase tracking-tighter mb-2 flex items-center gap-1">
+                    <span className="w-1 h-3 bg-accent" />Project Branches
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {branches.map((tag) => (
+                      <span key={tag} className="px-2 py-1 rounded border border-border/60 text-[10px] font-mono text-muted/70 bg-black/20">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="flex flex-wrap gap-3">
+                {project.repo ? (
+                  <Link href={project.repo} className="flex items-center gap-2 btn btn-outline btn-sm" target="_blank" rel="noopener noreferrer">Open Code</Link>
+                ) : (
+                  <span className="px-3 py-1.5 rounded border border-solid border-accent/30 text-xs font-inter text-accent/60">Code · private</span>
+                )}
+                {project.live && (
+                  <Link href={project.live} className="flex items-center gap-2 btn btn-outline btn-sm" target="_blank" rel="noopener noreferrer">Open Live</Link>
                 )}
               </div>
             </div>
           )}
         </div>
-
-        {/* Mobile detail panel (small screens) */}
-        {selected && project && (
-          <div className="lg:hidden glass p-6 rounded-xl border border-accent/50 shadow-[0_0_40px_rgba(0,242,255,0.2)] overflow-y-auto max-h-[calc(100vh-8rem)] mt-4">
-            <button
-              onClick={() => setSelected(null)}
-              className="absolute top-2 right-2 h-8 w-8 rounded border border-solid border-current/30 flex items-center justify-center text-xs text-foreground hover:bg-accent/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-              aria-label="Close details"
-            >
-              <span className="sr-only">Close</span>
-              <span
-                className="w-4 h-4"
-                dangerouslySetInnerHTML={{ __html: '<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>' }}
-              />
-            </button>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: CATEGORY_STYLE[PROJECT_META[project.name]?.category ?? "infrastructure"].color }} />
-              <span className="text-xs font-mono font-bold text-accent uppercase tracking-tighter">
-                {project.status === "planned" ? "planned" : project.status}
-              </span>
-            </div>
-            <h3 className="font-display font-bold text-lg text-foreground mb-2">{project.name}</h3>
-            <p className="text-sm text-muted leading-relaxed mb-4">{project.description}</p>
-
-            {branches.length > 0 && (
-              <div className="mb-4">
-                <h4 className="font-mono font-semibold text-xs text-accent uppercase tracking-tighter mb-2 flex items-center gap-1">
-                  <span className="w-1 h-3 bg-accent" />
-                  Project Branches
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {branches.map((tag) => (
-                    <span key={tag} className="px-2 py-1 rounded border border-border/60 text-[10px] font-mono text-muted/70 bg-black/20">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <div className="flex flex-wrap gap-3">
-              {project.repo ? (
-                <Link
-                  href={project.repo}
-                  className="flex items-center gap-2 btn btn-outline btn-sm"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Open Code
-                </Link>
-              ) : (
-                <span className="px-3 py-1.5 rounded border border-solid border-accent/30 text-xs font-inter text-accent/60">
-                  Code · private
-                </span>
-              )}
-              {project.live && (
-                <Link
-                  href={project.live}
-                  className="flex items-center gap-2 btn btn-outline btn-sm"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Open Live
-                </Link>
-              )}
-            </div>
-          </div>
-        )}
       </div>
     </section>
   );
 }
-
-export default ProjectGalaxy;
