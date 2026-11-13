@@ -148,15 +148,44 @@ export function SpatialNav() {
                 </Link>
               );
             })}
-            <a
-              href={CAL_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-accent/10 border border-accent/30 text-accent font-medium text-xs hover:bg-accent/20 transition-all no-underline text-decoration-none"
-              aria-label="Book a Call"
-            >
-              Book Call <ArrowRight size={12} strokeWidth={2} />
-            </a>
+            <div className="mt-4 pt-4 border-t border-border/50 flex flex-col gap-3">
+              <div className="flex items-center justify-center gap-2">
+                <a
+                  href={facts.links.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg border border-border/50 text-muted/70 hover:text-accent hover:border-accent/50 transition-all"
+                  aria-label="GitHub"
+                >
+                  <Github size={16} />
+                </a>
+                <a
+                  href={facts.links.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg border border-border/50 text-muted/70 hover:text-accent hover:border-accent/50 transition-all"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin size={16} />
+                </a>
+                <a
+                  href={`mailto:${facts.links.email}`}
+                  className="p-2 rounded-lg border border-border/50 text-muted/70 hover:text-accent hover:border-accent/50 transition-all"
+                  aria-label="Email"
+                >
+                  <Mail size={16} />
+                </a>
+              </div>
+              <a
+                href={CAL_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 justify-center px-4 py-2 rounded-lg bg-accent/10 border border-accent/30 text-accent font-medium text-xs hover:bg-accent/20 transition-all no-underline text-decoration-none"
+                aria-label="Book a Call"
+              >
+                Book Call <ArrowRight size={12} strokeWidth={2} />
+              </a>
+            </div>
           </nav>
         </div>
       )}

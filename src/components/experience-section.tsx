@@ -14,15 +14,18 @@ export function ExperienceSection() {
       <GlassPanel variant="lg" className="max-w-full px-6 md:max-w-5xl relative overflow-hidden z-10">
         <div className="relative">
           {/* Vertical timeline line */}
-          <div className="hidden md:block absolute left-[58px] top-0 bottom-0 w-[2px] bg-border/50" />
+          <div className="hidden md:block absolute left-[calc(50%-1px)] top-0 bottom-0 w-[2px] bg-border/50" />
 
           {facts.experience.map((exp, i) => (
             <article
               key={exp.employer}
-              className="relative pl-12 md:pl-20 pr-8 py-8 mb-8 hover-lift"
+              className="relative px-8 py-8 mb-8 hover-lift"
             >
               {/* Timeline node dot */}
-              <div className="absolute left-[58px] top-[16px] w-4 h-4 rounded-full bg-accent border-2 border-surface-background shadow-[0_0_10px_rgba(0,242,255,0.6)]" />
+              <div className="hidden md:block absolute left-[calc(50%-2px)] top-[16px] w-4 h-4 rounded-full bg-accent border-2 border-surface-background shadow-[0_0_10px_rgba(0,242,255,0.6)]" />
+              <div className="md:hidden flex justify-center mb-4">
+                <div className="w-4 h-4 rounded-full bg-accent border-2 border-surface-background shadow-[0_0_10px_rgba(0,242,255,0.6)]" />
+              </div>
 
               <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-4 mb-3">
                 <div className="flex-1">

@@ -106,10 +106,10 @@ Give me a hard backend or AI problem, from an ordering bot to a model gateway to
       name: "Algorithmic trading engine",
       description:
         "Live execution engine, central risk manager, replay and walk-forward harness with preregistered eligibility rules.",
-      repo: undefined,
+      repo: "https://github.com/Hassnain2003/trading-engine",
       live: undefined,
       demo: undefined,
-      status: "planned",
+      status: "live",
       tags: ["execution engine", "risk manager", "replay", "walk-forward"],
       result: "No profit claims.",
       resultConfirmed: true,

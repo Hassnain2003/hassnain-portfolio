@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { Html } from "@react-three/drei";
 import { SphereGeometry, BoxGeometry, BufferGeometry, Float32BufferAttribute, Line, LineBasicMaterial, PointsMaterial } from "three";
 import * as THREE from "three";
 import { facts } from "@/data/facts";
@@ -23,7 +24,7 @@ const PROJECT_META: Record<string, {
   AgentDine: { category: "agents", size: "large", status: "private" },
   "kube-triage": { category: "infrastructure", size: "large", status: "public" },
   "OpenAI LLM Gateway": { category: "agents", size: "medium", status: "live" },
-  "Algorithmic trading engine": { category: "full-stack", size: "medium", status: "planned" },
+  "Algorithmic trading engine": { category: "full-stack", size: "medium", status: "live" },
   "D&Z Cartique": { category: "full-stack", size: "medium", status: "live" },
   QLSS: { category: "infrastructure", size: "medium", status: "public" },
 };
@@ -67,9 +68,11 @@ function ProjectNode({ name, x, y, z, onSelect }: { name: string; x: number; y: 
     opacity: isPlanned ? 0.5 : 0.9,
   });
 
-  useFrame((state) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useFrame((state: any) => {
     if (!meshRef.current) return;
-    const time = state.clock.getElapsedTime();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const time = (state as any).clock.getElapsedTime();
     meshRef.current.position.y = y + Math.sin(time + x) * 0.15;
     meshRef.current.rotation.y += 0.01;
     meshRef.current.scale.setScalar(1 + Math.sin(time * 2 + y) * 0.05);
@@ -79,15 +82,37 @@ function ProjectNode({ name, x, y, z, onSelect }: { name: string; x: number; y: 
   });
 
   return (
-    <mesh
-      ref={meshRef}
-      position={[x, y, z]}
-      geometry={geometry}
-      material={material}
-      onClick={() => onSelect(name)}
-      onPointerOver={() => setHovered(true)}
-      onPointerOut={() => setHovered(false)}
-    />
+    <>
+      <mesh
+        ref={meshRef}
+        position={[x, y, z]}
+        geometry={geometry}
+        material={material}
+        onClick={() => onSelect(name)}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+      />
+      <Html
+        position={[x, y + radius + 0.35, z]}
+        style={{
+          pointerEvents: "none",
+          color: style.color,
+          fontSize: 10,
+          fontWeight: 700,
+          fontFamily: "monospace",
+          textTransform: "uppercase",
+          letterSpacing: "0.05em",
+          textAlign: "center",
+          textShadow: "0 0 8px rgba(0,0,0,0.8)",
+          whiteSpace: "nowrap",
+          opacity: hovered ? 1 : 0.75,
+          transition: "opacity 0.2s",
+          WebkitTextStroke: "2px rgba(0,0,0,0.9)",
+        }}
+      >
+        {name}
+      </Html>
+    </>
   );
 }
 
@@ -106,9 +131,11 @@ function ParticleField() {
   geometry.setAttribute("position", new Float32BufferAttribute(positions, 3));
   const material = new PointsMaterial({ size: 0.03, color: 0x00f2ff, transparent: true, opacity: 0.5 });
 
-  useFrame((state) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useFrame((state: any) => {
     if (!pointsRef.current) return;
-    const time = state.clock.getElapsedTime();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const time = (state as any).clock.getElapsedTime();
     const posAttr = geometry.attributes.position as THREE.BufferAttribute;
     for (let i = 0; i < count; i++) {
       const y = posAttr.getY(i);
@@ -138,9 +165,11 @@ function ConnectionLines({ centerX, centerY, centerZ }: { centerX: number; cente
   geometry.setAttribute("position", new Float32BufferAttribute(positions, 3));
   const material = new LineBasicMaterial({ color: 0x00f2ff, transparent: true, opacity: 0.2 });
 
-  useFrame((state) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useFrame((state: any) => {
     if (!linesRef.current) return;
-    const time = state.clock.getElapsedTime();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const time = (state as any).clock.getElapsedTime();
     material.opacity = 0.15 + Math.sin(time * 2) * 0.05;
   });
 
@@ -161,9 +190,11 @@ function HolographicCube({ color = 0x00f2ff }: { color?: number }) {
     })
   );
 
-  useFrame((state) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useFrame((state: any) => {
     if (!meshRef.current) return;
-    const time = state.clock.getElapsedTime();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const time = (state as any).clock.getElapsedTime();
     meshRef.current.rotation.x = time * 0.3;
     meshRef.current.rotation.y = time * 0.5;
     meshRef.current.rotation.z = time * 0.2;
@@ -208,10 +239,10 @@ export function ProjectGalaxy() {
           <p className="text-subhead text-muted/70">Interactive constellation of built systems. Click a node to open details.</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Graph container */}
-          <div className="h-[320px] md:h-[400px] lg:h-[700px] rounded-2xl border border-border/50 bg-black/30 backdrop-blur-sm relative overflow-hidden">
-            <Canvas camera={{ position: [0, 0, 12], fov: 45 }} shadows dpr={[1, 1.5]} gl={{ antialias: true, powerPreference: "high-performance" }}>
+          <div className="h-[300px] md:h-[420px] lg:h-[700px] rounded-2xl border border-border/50 bg-black/30 backdrop-blur-sm relative overflow-hidden">
+            <Canvas camera={{ position: [0, 0, 11], fov: 45 }} shadows dpr={[1, 1.5]} gl={{ antialias: true, powerPreference: "high-performance" }}>
               <ambientLight intensity={0.4} />
               <pointLight position={[10, 10, 10]} intensity={0.8} color="#00f2ff" />
               <pointLight position={[-10, -10, 10]} intensity={0.6} color="#bc13fe" />
@@ -248,7 +279,7 @@ export function ProjectGalaxy() {
               </button>
               <div className="flex items-center gap-2 mb-2">
                 <span className="w-2 h-2 rounded-full" style={{ backgroundColor: CATEGORY_STYLE[PROJECT_META[project.name]?.category ?? "infrastructure"].color }} />
-                <span className="text-xs font-mono font-bold text-accent uppercase tracking-tighter">{project.status === "planned" ? "planned" : project.status}</span>
+                <span className="text-xs font-mono font-bold text-accent uppercase tracking-tighter">{false ? "planned" : project.status}</span>
               </div>
               <h3 className="font-display font-bold text-lg text-foreground mb-2">{project.name}</h3>
               <p className="text-sm text-muted leading-relaxed mb-4">{project.description}</p>
@@ -322,7 +353,7 @@ export function ProjectGalaxy() {
               </button>
               <div className="flex items-center gap-2 mb-2">
                 <span className="w-2 h-2 rounded-full" style={{ backgroundColor: CATEGORY_STYLE[PROJECT_META[project.name]?.category ?? "infrastructure"].color }} />
-                <span className="text-xs font-mono font-bold text-accent uppercase tracking-tighter">{project.status === "planned" ? "planned" : project.status}</span>
+                <span className="text-xs font-mono font-bold text-accent uppercase tracking-tighter">{false ? "planned" : project.status}</span>
               </div>
               <h3 className="font-display font-bold text-lg text-foreground mb-2">{project.name}</h3>
               <p className="text-sm text-muted leading-relaxed mb-4">{project.description}</p>
